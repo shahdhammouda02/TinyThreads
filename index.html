@@ -27,14 +27,15 @@
                         <span class="icon">🛒</span>
                         <span class="badge" id="cartCount">0</span>
                     </button>
-                    <button id="authButton" class="icon-btn" type="button" aria-label="Sign in">
-                        <span class="icon">👤</span>
-                        <span id="authLabel">Login</span>
-                    </button>
-                    <button id="logoutNavButton" class="icon-btn hidden" type="button" aria-label="Log out">
-                        <span class="icon">🚪</span>
-                        <span>Logout</span>
-                    </button>
+                    <div class="auth-dropdown">
+                        <button id="authButton" class="icon-btn" type="button" aria-label="Sign in" aria-haspopup="true" aria-expanded="false">
+                            <span id="authLabel">Login</span>
+                            <span class="dropdown-arrow" aria-hidden="true">▾</span>
+                        </button>
+                        <div id="authMenu" class="auth-menu hidden">
+                            <button type="button" id="logoutNavButton" class="auth-menu-item">Logout</button>
+                        </div>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -226,7 +227,10 @@
                         <span>Total</span>
                         <strong id="cartTotal">$0.00</strong>
                     </div>
-                    <button class="btn btn-primary" type="button" id="checkoutButton">Checkout</button>
+                    <div class="cart-actions">
+                        <button class="btn btn-outline" type="button" id="deleteAllButton">Delete all</button>
+                        <button class="btn btn-primary" type="button" id="checkoutButton">Checkout</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -329,22 +333,28 @@
             const cartFooter = document.getElementById('cartFooter');
             const cartTotal = document.getElementById('cartTotal');
             const checkoutButton = document.getElementById('checkoutButton');
+            const deleteAllButton = document.getElementById('deleteAllButton');
             const addCartButtons = Array.from(document.querySelectorAll('.add-cart-btn'));
             const authButton = document.getElementById('authButton');
+            const authMenu = document.getElementById('authMenu');
             const logoutNavButton = document.getElementById('logoutNavButton');
             const authLabel = document.getElementById('authLabel');
 
             const STORAGE_USER = 'tinythreadsUser';
-            const STORAGE_CART = 'tinythreadsCart';
+            const STORAGE_CART = 'tinythreadsCartByUser';
             const STORAGE_USERS = 'tinythreadsUsers';
 
             let currentUser = JSON.parse(localStorage.getItem(STORAGE_USER) || 'null');
-            let cart = JSON.parse(localStorage.getItem(STORAGE_CART) || '{}');
+            let cartMap = JSON.parse(localStorage.getItem(STORAGE_CART) || '{}');
+            let cart = currentUser ? (cartMap[currentUser.email] || {}) : {};
             let users = JSON.parse(localStorage.getItem(STORAGE_USERS) || '{}');
 
             function saveState(){
+                if(currentUser){
+                    cartMap[currentUser.email] = cart;
+                }
                 localStorage.setItem(STORAGE_USER, JSON.stringify(currentUser));
-                localStorage.setItem(STORAGE_CART, JSON.stringify(cart));
+                localStorage.setItem(STORAGE_CART, JSON.stringify(cartMap));
                 localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
             }
 
@@ -385,6 +395,7 @@
                             <button type="button" class="btn btn-outline cart-decrease" data-item="${item.name}">-</button>
                             <span>${item.quantity}</span>
                             <button type="button" class="btn btn-outline cart-increase" data-item="${item.name}">+</button>
+                            <button type="button" class="btn btn-outline cart-delete" data-item="${item.name}">Delete</button>
                         </div>
                     `;
                     cartItems.appendChild(row);
@@ -397,12 +408,30 @@
                 cartItems.querySelectorAll('.cart-increase').forEach(button => {
                     button.addEventListener('click', () => adjustQty(button.dataset.item, 1));
                 });
+                cartItems.querySelectorAll('.cart-delete').forEach(button => {
+                    button.addEventListener('click', () => removeItem(button.dataset.item));
+                });
             }
 
             function adjustQty(name, delta){
                 if(!cart[name]) return;
                 cart[name].quantity += delta;
                 if(cart[name].quantity < 1) delete cart[name];
+                saveState();
+                updateCartCount();
+                renderCart();
+            }
+
+            function removeItem(name){
+                if(!cart[name]) return;
+                delete cart[name];
+                saveState();
+                updateCartCount();
+                renderCart();
+            }
+
+            function clearCart(){
+                cart = {};
                 saveState();
                 updateCartCount();
                 renderCart();
@@ -419,27 +448,52 @@
                 cartOverlay.classList.remove('show');
             }
 
+            function closeAuthMenu(){
+                authMenu.classList.add('hidden');
+                authButton.setAttribute('aria-expanded', 'false');
+            }
+
             function updateAuthNav(){
                 if(currentUser){
-                    authLabel.textContent = currentUser.name || currentUser.email.split('@')[0];
-                    authButton.setAttribute('aria-label', 'View account');
-                    logoutNavButton.classList.remove('hidden');
+                    const userName = currentUser.name || currentUser.email.split('@')[0];
+                    authLabel.textContent = `Welcome, ${userName}`;
+                    authButton.setAttribute('aria-label', `Account menu for ${userName}`);
                 } else {
                     authLabel.textContent = 'Login';
                     authButton.setAttribute('aria-label', 'Sign in');
-                    logoutNavButton.classList.add('hidden');
+                    closeAuthMenu();
                 }
                 updateCartButtons();
             }
 
-            authButton.addEventListener('click', () => {
-                window.location.href = 'login.html';
+            authButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if(!currentUser){
+                    window.location.href = 'login.html';
+                    return;
+                }
+                authMenu.classList.toggle('hidden');
+                const expanded = authMenu.classList.contains('hidden') ? 'false' : 'true';
+                authButton.setAttribute('aria-expanded', expanded);
             });
 
             logoutNavButton.addEventListener('click', () => {
+                if(currentUser){
+                    cartMap[currentUser.email] = cart;
+                }
                 currentUser = null;
+                cart = {};
                 saveState();
                 updateAuthNav();
+                updateCartCount();
+                closeAuthMenu();
+                window.location.href = 'login.html';
+            });
+
+            document.addEventListener('click', function(event){
+                if(currentUser && !authMenu.classList.contains('hidden') && !event.target.closest('.auth-dropdown')){
+                    closeAuthMenu();
+                }
             });
 
             cartButton.addEventListener('click', () => {
@@ -461,6 +515,11 @@
                 updateCartCount();
                 renderCart();
                 closeCartOverlay();
+            });
+
+            deleteAllButton.addEventListener('click', () => {
+                if(!Object.keys(cart).length) return;
+                clearCart();
             });
 
             addCartButtons.forEach(button => {

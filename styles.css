@@ -19,11 +19,20 @@ html,body{height:100%;margin:0;background:var(--bg);color:#0f172a}
 .nav a.cta:hover{background:#f79e26}
 
 .nav-actions{display:flex;align-items:center;gap:10px;margin-left:18px}
+.auth-dropdown{position:relative}
+.auth-menu{position:absolute;right:0;top:calc(100% + 8px);background:#fff;border:1px solid rgba(15,23,42,0.12);border-radius:16px;box-shadow:0 18px 40px rgba(15,23,42,0.12);min-width:180px;overflow:hidden;z-index:50}
+.auth-menu.hidden{display:none}
+.auth-menu-item{display:block;width:100%;text-align:left;padding:12px 16px;border:none;background:none;color:#0f172a;cursor:pointer;font-size:0.95rem}
+.auth-menu-item:hover{background:rgba(245,158,11,0.12)}
 .icon-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(245,158,11,0.22);border-radius:12px;background:#fff;color:#0f172a;cursor:pointer;transition:transform 0.2s ease,background 0.2s ease}
 .icon-btn:hover{background:#fffbf5;transform:translateY(-1px)}
 .badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:0.8rem;border-radius:999px;background:var(--accent);color:#fff}
 #cartButton{position:relative}
 #cartButton .badge{position:absolute;top:0;right:0;transform:translate(30%,-30%);width:18px;height:18px;font-size:0.72rem;padding:0;}
+.cart-row-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cart-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
+.cart-delete{border-color:rgba(220,38,38,0.25);color:#dc2626}
+.cart-delete:hover{background:rgba(220,38,38,0.12);border-color:rgba(220,38,38,0.35)}
 
 /* mobile toggle button (hidden on large screens) */
 .nav-toggle{display:none;border:0;background:transparent;padding:8px;margin-left:8px;cursor:pointer}

@@ -191,6 +191,9 @@
                 currentUser = null;
                 saveState();
                 updateAuthUI();
+                const cartCount = document.getElementById('cartCount');
+                cartCount.textContent = '0';
+                cartCount.style.display = 'none';
             });
 
             switchModeButton.addEventListener('click', function(){
@@ -237,7 +240,10 @@
 
         (function(){
             const cartCount = document.getElementById('cartCount');
-            const cart = JSON.parse(localStorage.getItem('tinythreadsCart') || '{}');
+            const STORAGE_CART = 'tinythreadsCartByUser';
+            const currentUser = JSON.parse(localStorage.getItem('tinythreadsUser') || 'null');
+            const cartMap = JSON.parse(localStorage.getItem(STORAGE_CART) || '{}');
+            const cart = currentUser ? (cartMap[currentUser.email] || {}) : {};
             const total = Object.values(cart).reduce((sum, item) => sum + (item.quantity || 0), 0);
             cartCount.textContent = total;
             cartCount.style.display = total ? 'inline-flex' : 'none';
