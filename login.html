@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinyThreads | Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <h1 class="brand"><a href="index.html">TinyThreads</a></h1>
+            <button class="nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Toggle menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <nav id="site-nav" class="nav" role="navigation">
+                <a href="index.html#showcase">Showcase</a>
+                <a href="index.html#collection">Collection</a>
+                <a href="index.html#categories">Categories</a>
+                <a href="index.html#testimonials">Reviews</a>
+                <a href="index.html#contact" class="cta">Shop</a>
+                <div class="nav-actions">
+                    <button id="cartButton" class="icon-btn" type="button" aria-label="Open cart">
+                        <span class="icon">🛒</span>
+                        <span class="badge" id="cartCount">0</span>
+                    </button>
+                    <button id="authButton" class="icon-btn" type="button" aria-label="Login">
+                        <span class="icon">👤</span>
+                        <span id="authLabel">Login</span>
+                    </button>
+                    <button id="logoutNavButton" class="icon-btn hidden" type="button" aria-label="Log out">
+                        <span class="icon">🚪</span>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="container section auth-page">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div>
+                        <span class="eyebrow">Members only</span>
+                        <h3 id="authHeading">Login to your account</h3>
+                        <p id="authDescription">Use your email and password to sign in, or create an account to start shopping.</p>
+                    </div>
+                </div>
+                <form id="authForm" class="auth-form" novalidate>
+                    <label>
+                        <span>Email</span>
+                        <input id="authEmail" type="email" name="email" required
+                            pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+                            placeholder="you@example.com">
+                    </label>
+                    <label>
+                        <span>Password</span>
+                        <input id="authPassword" type="password" name="password" required
+                            pattern=".{8,}"
+                            title="Password must be at least 8 characters"
+                            placeholder="At least 8 characters">
+                    </label>
+                    <label id="confirmPasswordLabel" class="hidden">
+                        <span>Confirm Password</span>
+                        <input id="authConfirmPassword" type="password" name="confirmPassword"
+                            pattern=".{8,}"
+                            title="Passwords must match"
+                            placeholder="Repeat your password">
+                    </label>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" type="submit" id="authSubmit">Login</button>
+                    </div>
+                    <p class="form-message hidden" id="authMessage"></p>
+                    <div class="auth-footer">
+                        <p id="authPrompt">Don't have an account?</p>
+                        <button id="switchModeButton" class="auth-link" type="button">Sign up</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>&copy; 2026 TinyThreads. Little outfits, big smiles.</p>
+            <nav class="footer-nav">
+                <a href="index.html#privacy">Privacy</a>
+                <a href="index.html#terms">Terms</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script>
+        (function(){
+            window.addEventListener('keydown', function(e){ if(e.key==='Tab') document.documentElement.classList.add('keyboard'); }, {once:true});
+        })();
+
+        (function(){
+            const toggle = document.querySelector('.nav-toggle');
+            const nav = document.getElementById('site-nav');
+            if(!toggle || !nav) return;
+            function setOpen(isOpen){
+                nav.classList.toggle('open', isOpen);
+                toggle.setAttribute('aria-expanded', String(!!isOpen));
+            }
+            toggle.addEventListener('click', function(e){
+                e.stopPropagation();
+                setOpen(!nav.classList.contains('open'));
+            });
+            nav.addEventListener('click', function(e){ if(e.target.tagName === 'A') setOpen(false); });
+            document.addEventListener('click', function(e){ if(!nav.classList.contains('open')) return; if(!nav.contains(e.target) && !toggle.contains(e.target)) setOpen(false); });
+            document.addEventListener('keydown', function(e){ if(e.key === 'Escape') setOpen(false); });
+        })();
+
+        (function(){
+            const authButton = document.getElementById('authButton');
+            const logoutNavButton = document.getElementById('logoutNavButton');
+            const switchModeButton = document.getElementById('switchModeButton');
+            const authPrompt = document.getElementById('authPrompt');
+            const confirmPasswordLabel = document.getElementById('confirmPasswordLabel');
+            const authForm = document.getElementById('authForm');
+            const authHeading = document.getElementById('authHeading');
+            const authDescription = document.getElementById('authDescription');
+            const authMessage = document.getElementById('authMessage');
+            const authEmail = document.getElementById('authEmail');
+            const authPassword = document.getElementById('authPassword');
+            const authConfirmPassword = document.getElementById('authConfirmPassword');
+            const authSubmit = document.getElementById('authSubmit');
+
+            const STORAGE_USER = 'tinythreadsUser';
+            const STORAGE_USERS = 'tinythreadsUsers';
+            let users = JSON.parse(localStorage.getItem(STORAGE_USERS) || '{}');
+            let currentUser = JSON.parse(localStorage.getItem(STORAGE_USER) || 'null');
+            let authMode = 'login';
+
+            function showMessage(text, type){
+                authMessage.textContent = text;
+                authMessage.className = 'form-message';
+                authMessage.classList.add(type === 'error' ? 'form-error' : 'form-success');
+                authMessage.classList.remove('hidden');
+            }
+
+            function updateAuthUI(){
+                if(currentUser){
+                    authButton.querySelector('#authLabel').textContent = currentUser.name || currentUser.email.split('@')[0];
+                    authButton.setAttribute('aria-label', 'Account');
+                    logoutNavButton.classList.remove('hidden');
+                    authForm.querySelector('.btn-primary').textContent = 'Continue';
+                    authHeading.textContent = 'You are already signed in';
+                    authDescription.textContent = `Welcome back, ${currentUser.name || currentUser.email}. You can log out or head home.`;
+                } else {
+                    authButton.querySelector('#authLabel').textContent = 'Login';
+                    authButton.setAttribute('aria-label', 'Login');
+                    logoutNavButton.classList.add('hidden');
+                    authHeading.textContent = 'Login to your account';
+                    authDescription.textContent = 'Use your email and password to sign in, or create an account to start shopping.';
+                }
+            }
+
+            function toggleAuthMode(mode){
+                authMode = mode;
+                confirmPasswordLabel.classList.toggle('hidden', mode !== 'signup');
+                authSubmit.textContent = mode === 'login' ? 'Login' : 'Create account';
+                authHeading.textContent = mode === 'login' ? 'Login to your account' : 'Create a new account';
+                authDescription.textContent = mode === 'login'
+                    ? 'Enter your credentials to log in.'
+                    : 'Sign up with your email and a secure password.';
+                authPrompt.textContent = mode === 'login' ? "Don't have an account?" : 'Already have an account?';
+                switchModeButton.textContent = mode === 'login' ? 'Sign up' : 'Login';
+                authMessage.classList.add('hidden');
+            }
+
+            function saveState(){
+                localStorage.setItem(STORAGE_USER, JSON.stringify(currentUser));
+                localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+            }
+
+            authButton.addEventListener('click', function(){
+                if(currentUser){
+                    window.location.href = 'index.html';
+                } else {
+                    window.location.href = 'login.html';
+                }
+            });
+
+            logoutNavButton.addEventListener('click', function(){
+                currentUser = null;
+                saveState();
+                updateAuthUI();
+            });
+
+            switchModeButton.addEventListener('click', function(){
+                toggleAuthMode(authMode === 'login' ? 'signup' : 'login');
+            });
+
+            authForm.addEventListener('submit', function(event){
+                event.preventDefault();
+                authMessage.classList.add('hidden');
+                if(!authForm.checkValidity()){
+                    authForm.reportValidity();
+                    return;
+                }
+                const email = authEmail.value.trim().toLowerCase();
+                const password = authPassword.value;
+                const confirmPassword = authConfirmPassword.value;
+                if(authMode === 'signup'){
+                    if(password !== confirmPassword){
+                        showMessage('Passwords do not match.', 'error');
+                        return;
+                    }
+                    if(users[email]){
+                        showMessage('An account with that email already exists.', 'error');
+                        return;
+                    }
+                    users[email] = { email, password, name: email.split('@')[0] };
+                    currentUser = users[email];
+                    saveState();
+                    window.location.href = 'index.html';
+                    return;
+                }
+                if(!users[email] || users[email].password !== password){
+                    showMessage('Email or password is incorrect.', 'error');
+                    return;
+                }
+                currentUser = users[email];
+                saveState();
+                window.location.href = 'index.html';
+            });
+
+            updateAuthUI();
+            toggleAuthMode('login');
+        })();
+    </script>
+</body>
+</html>

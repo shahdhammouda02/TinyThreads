@@ -22,6 +22,20 @@
                 <a href="#categories">Categories</a>
                 <a href="#testimonials">Reviews</a>
                 <a href="#contact" class="cta">Shop</a>
+                <div class="nav-actions">
+                    <button id="cartButton" class="icon-btn" type="button" aria-label="Open cart">
+                        <span class="icon">🛒</span>
+                        <span class="badge" id="cartCount">0</span>
+                    </button>
+                    <button id="authButton" class="icon-btn" type="button" aria-label="Sign in">
+                        <span class="icon">👤</span>
+                        <span id="authLabel">Login</span>
+                    </button>
+                    <button id="logoutNavButton" class="icon-btn hidden" type="button" aria-label="Log out">
+                        <span class="icon">🚪</span>
+                        <span>Logout</span>
+                    </button>
+                </div>
             </nav>
         </div>
     </header>
@@ -91,25 +105,41 @@
                 <p>Our top kids clothing picks for comfy school outfits, weekend play, and everyday style.</p>
             </div>
             <div class="cards grid-4">
-                <article class="card">
+                <article class="card" data-item="Kids Sneakers" data-price="34.99">
                     <img loading="lazy" src="images/card-sneakers.svg" alt="Kids colorful sneakers">
                     <h4>Kids Sneakers</h4>
                     <p>Bold colors, grippy soles, and a fun fit that stays comfortable all day.</p>
+                    <div class="card-meta">
+                        <strong>$34.99</strong>
+                        <button class="btn btn-outline add-cart-btn" type="button">Add to Cart</button>
+                    </div>
                 </article>
-                <article class="card">
+                <article class="card" data-item="Denim Jacket" data-price="44.99">
                     <img loading="lazy" src="images/card-jacket.svg" alt="Kids wearing a denim jacket">
                     <h4>Denim Jacket</h4>
                     <p>Lightweight layering with a classic look for cooler mornings and park days.</p>
+                    <div class="card-meta">
+                        <strong>$44.99</strong>
+                        <button class="btn btn-outline add-cart-btn" type="button">Add to Cart</button>
+                    </div>
                 </article>
-                <article class="card">
+                <article class="card" data-item="Graphic Tee" data-price="18.99">
                     <img loading="lazy" src="images/card-tee.svg" alt="Kids graphic t-shirt">
                     <h4>Graphic Tee</h4>
                     <p>Soft cotton tees with playful prints that make getting dressed fun.</p>
+                    <div class="card-meta">
+                        <strong>$18.99</strong>
+                        <button class="btn btn-outline add-cart-btn" type="button">Add to Cart</button>
+                    </div>
                 </article>
-                <article class="card">
+                <article class="card" data-item="Stretch Jeans" data-price="32.99">
                     <img loading="lazy" src="images/card-jeans.svg" alt="Kids denim jeans">
                     <h4>Stretch Jeans</h4>
                     <p>Classic denim with added stretch for running, jumping, and climbing.</p>
+                    <div class="card-meta">
+                        <strong>$32.99</strong>
+                        <button class="btn btn-outline add-cart-btn" type="button">Add to Cart</button>
+                    </div>
                 </article>
             </div>
         </section>
@@ -126,17 +156,20 @@
                 </ul>
             </div>
             <div class="category-grid">
-                <article class="category-card">
+                <article class="category-card" data-item="Jackets" data-price="29.99">
                     <img loading="lazy" src="images/category-jackets.svg" alt="Kids jacket outdoors">
                     <h4>Jackets</h4>
+                    <button class="btn btn-outline add-cart-btn" type="button">Add to Cart</button>
                 </article>
-                <article class="category-card">
+                <article class="category-card" data-item="Jeans" data-price="25.99">
                     <img loading="lazy" src="images/category-jeans.svg" alt="Kids wearing jeans">
                     <h4>Jeans</h4>
+                    <button class="btn btn-outline add-cart-btn" type="button">Add to Cart</button>
                 </article>
-                <article class="category-card">
+                <article class="category-card" data-item="Shoes" data-price="22.99">
                     <img loading="lazy" src="images/category-shoes.svg" alt="Kids sneakers on a floor">
                     <h4>Shoes</h4>
+                    <button class="btn btn-outline add-cart-btn" type="button">Add to Cart</button>
                 </article>
             </div>
         </section>
@@ -174,6 +207,29 @@
                 </form>
             </div>
         </section>
+
+        <div id="cartOverlay" class="cart-overlay hidden">
+            <div id="cartBackdrop" class="cart-overlay-backdrop"></div>
+            <div class="cart-card">
+                <div class="cart-header">
+                    <div>
+                        <span class="eyebrow">Your cart</span>
+                        <h3>Shopping bag</h3>
+                    </div>
+                    <button class="btn btn-outline" type="button" id="closeCart">Close</button>
+                </div>
+                <div id="cartItems" class="cart-items">
+                    <p class="empty-cart">Your cart is empty. Add something fun!</p>
+                </div>
+                <div class="cart-footer hidden" id="cartFooter">
+                    <div class="cart-total">
+                        <span>Total</span>
+                        <strong id="cartTotal">$0.00</strong>
+                    </div>
+                    <button class="btn btn-primary" type="button" id="checkoutButton">Checkout</button>
+                </div>
+            </div>
+        </div>
 
         <section class="container section contact" id="contact">
             <h3>Contact Us</h3>
@@ -260,6 +316,176 @@
             next.addEventListener('click', () => setSlide((activeIndex + 1) % slides.length));
 
             setInterval(() => setSlide((activeIndex + 1) % slides.length), 6000);
+        })();
+
+        // Cart overlay + auth nav state
+        (function(){
+            const cartButton = document.getElementById('cartButton');
+            const cartCount = document.getElementById('cartCount');
+            const cartOverlay = document.getElementById('cartOverlay');
+            const cartBackdrop = document.getElementById('cartBackdrop');
+            const closeCart = document.getElementById('closeCart');
+            const cartItems = document.getElementById('cartItems');
+            const cartFooter = document.getElementById('cartFooter');
+            const cartTotal = document.getElementById('cartTotal');
+            const checkoutButton = document.getElementById('checkoutButton');
+            const addCartButtons = Array.from(document.querySelectorAll('.add-cart-btn'));
+            const authButton = document.getElementById('authButton');
+            const logoutNavButton = document.getElementById('logoutNavButton');
+            const authLabel = document.getElementById('authLabel');
+
+            const STORAGE_USER = 'tinythreadsUser';
+            const STORAGE_CART = 'tinythreadsCart';
+            const STORAGE_USERS = 'tinythreadsUsers';
+
+            let currentUser = JSON.parse(localStorage.getItem(STORAGE_USER) || 'null');
+            let cart = JSON.parse(localStorage.getItem(STORAGE_CART) || '{}');
+            let users = JSON.parse(localStorage.getItem(STORAGE_USERS) || '{}');
+
+            function saveState(){
+                localStorage.setItem(STORAGE_USER, JSON.stringify(currentUser));
+                localStorage.setItem(STORAGE_CART, JSON.stringify(cart));
+                localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+            }
+
+            function formatMoney(value){
+                return '$' + Number(value).toFixed(2);
+            }
+
+            function updateCartCount(){
+                const total = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+                cartCount.textContent = total;
+                cartCount.style.display = total ? 'inline-flex' : 'none';
+            }
+
+            function updateCartButtons(){
+                addCartButtons.forEach(button => {
+                    button.disabled = !currentUser;
+                });
+            }
+
+            function renderCart(){
+                const entries = Object.values(cart);
+                cartItems.innerHTML = '';
+                if(!entries.length){
+                    cartItems.innerHTML = '<p class="empty-cart">Your cart is empty. Add something fun!</p>';
+                    cartFooter.classList.add('hidden');
+                    return;
+                }
+                let total = 0;
+                entries.forEach(item => {
+                    total += item.price * item.quantity;
+                    const row = document.createElement('div');
+                    row.className = 'cart-row';
+                    row.innerHTML = `
+                        <div>
+                            <strong>${item.name}</strong>
+                            <p>${item.quantity} × ${formatMoney(item.price)}</p>
+                        </div>
+                        <div class="cart-row-actions">
+                            <button type="button" class="btn btn-outline cart-decrease" data-item="${item.name}">-</button>
+                            <span>${item.quantity}</span>
+                            <button type="button" class="btn btn-outline cart-increase" data-item="${item.name}">+</button>
+                        </div>
+                    `;
+                    cartItems.appendChild(row);
+                });
+                cartTotal.textContent = formatMoney(total);
+                cartFooter.classList.remove('hidden');
+                cartItems.querySelectorAll('.cart-decrease').forEach(button => {
+                    button.addEventListener('click', () => adjustQty(button.dataset.item, -1));
+                });
+                cartItems.querySelectorAll('.cart-increase').forEach(button => {
+                    button.addEventListener('click', () => adjustQty(button.dataset.item, 1));
+                });
+            }
+
+            function adjustQty(name, delta){
+                if(!cart[name]) return;
+                cart[name].quantity += delta;
+                if(cart[name].quantity < 1) delete cart[name];
+                saveState();
+                updateCartCount();
+                renderCart();
+            }
+
+            function openCart(){
+                renderCart();
+                cartOverlay.classList.remove('hidden');
+                cartOverlay.classList.add('show');
+            }
+
+            function closeCartOverlay(){
+                cartOverlay.classList.add('hidden');
+                cartOverlay.classList.remove('show');
+            }
+
+            function updateAuthNav(){
+                if(currentUser){
+                    authLabel.textContent = currentUser.name || currentUser.email.split('@')[0];
+                    authButton.setAttribute('aria-label', 'View account');
+                    logoutNavButton.classList.remove('hidden');
+                } else {
+                    authLabel.textContent = 'Login';
+                    authButton.setAttribute('aria-label', 'Sign in');
+                    logoutNavButton.classList.add('hidden');
+                }
+                updateCartButtons();
+            }
+
+            authButton.addEventListener('click', () => {
+                window.location.href = 'login.html';
+            });
+
+            logoutNavButton.addEventListener('click', () => {
+                currentUser = null;
+                saveState();
+                updateAuthNav();
+            });
+
+            cartButton.addEventListener('click', () => {
+                if(cartOverlay.classList.contains('show')){
+                    closeCartOverlay();
+                } else {
+                    openCart();
+                }
+            });
+
+            closeCart.addEventListener('click', closeCartOverlay);
+            cartBackdrop.addEventListener('click', closeCartOverlay);
+            document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeCartOverlay(); });
+
+            checkoutButton.addEventListener('click', () => {
+                if(!Object.keys(cart).length) return;
+                cart = {};
+                saveState();
+                updateCartCount();
+                renderCart();
+                closeCartOverlay();
+            });
+
+            addCartButtons.forEach(button => {
+                button.addEventListener('click', function(){
+                    if(!currentUser){
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    const article = button.closest('[data-item]');
+                    if(!article) return;
+                    const name = article.dataset.item;
+                    const price = Number(article.dataset.price || 0);
+                    if(cart[name]){
+                        cart[name].quantity += 1;
+                    } else {
+                        cart[name] = { name, price, quantity: 1 };
+                    }
+                    saveState();
+                    updateCartCount();
+                });
+            });
+
+            updateCartCount();
+            updateAuthNav();
         })();
         </script>
 </body>
