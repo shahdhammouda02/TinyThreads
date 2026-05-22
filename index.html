@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinyThreads | Kids Clothing Store</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <h1 class="brand">TinyThreads</h1>
+            <button class="nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Toggle menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <nav id="site-nav" class="nav" role="navigation">
+                <a href="#showcase">Showcase</a>
+                <a href="#collection">Collection</a>
+                <a href="#categories">Categories</a>
+                <a href="#testimonials">Reviews</a>
+                <a href="#contact" class="cta">Shop</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="showcase">
+            <div class="container hero-inner">
+                <div class="hero-copy">
+                    <span class="eyebrow">Kids fashion made easy</span>
+                    <h2>Colorful clothes for everyday adventures.</h2>
+                    <p>Find soft tees, stretch jeans, playful jackets, and bright shoes made for kids who love to move.</p>
+                    <div class="hero-ctas">
+                        <a href="#collection" class="btn btn-primary">Shop Best Sellers</a>
+                        <a href="#categories" class="btn btn-outline">Browse Categories</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div>
+                            <strong>150+</strong>
+                            <span>kids styles</span>
+                        </div>
+                        <div>
+                            <strong>2-day</strong>
+                            <span>shipping</span>
+                        </div>
+                        <div>
+                            <strong>30-day</strong>
+                            <span>returns</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-slider">
+                    <div class="carousel" id="carousel">
+                        <div class="slide active">
+                            <img src="images/slide-sneakers.svg" alt="Kids colorful sneakers">
+                            <div class="slide-caption">
+                                <p>Playtime Sneakers</p>
+                                <h3>Step into fun</h3>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <img src="images/slide-jacket.svg" alt="Kids denim jacket">
+                            <div class="slide-caption">
+                                <p>Denim Adventure Jacket</p>
+                                <h3>Layer with playful style</h3>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <img src="images/slide-tee.svg" alt="Kids graphic t-shirt">
+                            <div class="slide-caption">
+                                <p>Storybook Tee</p>
+                                <h3>Bright prints kids love</h3>
+                            </div>
+                        </div>
+                        <div class="carousel-controls">
+                            <button class="carousel-btn prev" aria-label="Previous slide">&#8249;</button>
+                            <button class="carousel-btn next" aria-label="Next slide">&#8250;</button>
+                        </div>
+                        <div class="carousel-dots" id="carouselDots"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="collection" class="container section">
+            <div class="section-intro">
+                <h3 class="section-title">Best Sellers</h3>
+                <p>Our top kids clothing picks for comfy school outfits, weekend play, and everyday style.</p>
+            </div>
+            <div class="cards grid-4">
+                <article class="card">
+                    <img loading="lazy" src="images/card-sneakers.svg" alt="Kids colorful sneakers">
+                    <h4>Kids Sneakers</h4>
+                    <p>Bold colors, grippy soles, and a fun fit that stays comfortable all day.</p>
+                </article>
+                <article class="card">
+                    <img loading="lazy" src="images/card-jacket.svg" alt="Kids wearing a denim jacket">
+                    <h4>Denim Jacket</h4>
+                    <p>Lightweight layering with a classic look for cooler mornings and park days.</p>
+                </article>
+                <article class="card">
+                    <img loading="lazy" src="images/card-tee.svg" alt="Kids graphic t-shirt">
+                    <h4>Graphic Tee</h4>
+                    <p>Soft cotton tees with playful prints that make getting dressed fun.</p>
+                </article>
+                <article class="card">
+                    <img loading="lazy" src="images/card-jeans.svg" alt="Kids denim jeans">
+                    <h4>Stretch Jeans</h4>
+                    <p>Classic denim with added stretch for running, jumping, and climbing.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="categories" class="container section split">
+            <div>
+                <h3 class="section-title">Shop by Category</h3>
+                <p>Style solutions for every routine — from morning playwear to bedtime cozy sets.</p>
+                <ul class="features">
+                    <li>Playwear & tops</li>
+                    <li>Jeans & bottoms</li>
+                    <li>Jackets & outerwear</li>
+                    <li>Shoes & sneakers</li>
+                </ul>
+            </div>
+            <div class="category-grid">
+                <article class="category-card">
+                    <img loading="lazy" src="images/category-jackets.svg" alt="Kids jacket outdoors">
+                    <h4>Jackets</h4>
+                </article>
+                <article class="category-card">
+                    <img loading="lazy" src="images/category-jeans.svg" alt="Kids wearing jeans">
+                    <h4>Jeans</h4>
+                </article>
+                <article class="category-card">
+                    <img loading="lazy" src="images/category-shoes.svg" alt="Kids sneakers on a floor">
+                    <h4>Shoes</h4>
+                </article>
+            </div>
+        </section>
+
+        <section id="testimonials" class="container section">
+            <div class="section-intro">
+                <h3 class="section-title">What Parents Love</h3>
+                <p>Trusted by families for easy care, playful prints, and clothes that stay comfy through every activity.</p>
+            </div>
+            <div class="testimonial-grid">
+                <article class="testimonial-card">
+                    <p>"The fits are perfect and the colors are so cheerful—my kids actually want to wear their outfits."</p>
+                    <strong>— Emma, mom of two</strong>
+                </article>
+                <article class="testimonial-card">
+                    <p>"Great quality and fast shipping. The jacket is our favorite piece for outdoor play."</p>
+                    <strong>— Noah, dad</strong>
+                </article>
+                <article class="testimonial-card">
+                    <p>"I love that everything washes well and still looks bright after many wears."</p>
+                    <strong>— Aisha, parent</strong>
+                </article>
+            </div>
+        </section>
+
+        <section class="container section newsletter">
+            <div class="newsletter-card">
+                <div>
+                    <h3>Join the TinyThreads club</h3>
+                    <p>Get early access to new arrivals, seasonal deals, and outfit ideas for kids.</p>
+                </div>
+                <form action="#" class="signup-form">
+                    <input type="email" placeholder="Enter your email" aria-label="Email address">
+                    <button class="btn btn-primary">Join Now</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="container section contact" id="contact">
+            <h3>Contact Us</h3>
+            <p>Email us at <a href="mailto:hello@tinythreads.example">hello@tinythreads.example</a> or call <strong>(555) 987-6543</strong>.</p>
+            <p class="small">Free shipping on orders over $50 and easy 30-day returns on all kids clothes.</p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>&copy; 2026 TinyThreads. Little outfits, big smiles.</p>
+            <nav class="footer-nav">
+                <a href="#privacy">Privacy</a>
+                <a href="#terms">Terms</a>
+            </nav>
+        </div>
+    </footer>
+
+        <script>
+        // Small accessibility: focus outline for keyboard users
+        (function(){
+            window.addEventListener('keydown', function(e){ if(e.key==='Tab') document.documentElement.classList.add('keyboard'); }, {once:true});
+        })();
+
+        // Mobile nav toggle
+        (function(){
+            const toggle = document.querySelector('.nav-toggle');
+            const nav = document.getElementById('site-nav');
+            if(!toggle || !nav) return;
+
+            function setOpen(isOpen){
+                nav.classList.toggle('open', isOpen);
+                toggle.setAttribute('aria-expanded', String(!!isOpen));
+            }
+
+            toggle.addEventListener('click', function(e){
+                e.stopPropagation();
+                setOpen(!nav.classList.contains('open'));
+            });
+
+            nav.addEventListener('click', function(e){
+                if(e.target.tagName === 'A') setOpen(false);
+            });
+
+            document.addEventListener('click', function(e){
+                if(!nav.classList.contains('open')) return;
+                if(!nav.contains(e.target) && !toggle.contains(e.target)) setOpen(false);
+            });
+
+            document.addEventListener('keydown', function(e){ if(e.key === 'Escape') setOpen(false); });
+        })();
+
+        // Carousel slider
+        (function(){
+            const slides = Array.from(document.querySelectorAll('.slide'));
+            const prev = document.querySelector('.carousel-btn.prev');
+            const next = document.querySelector('.carousel-btn.next');
+            const dotsContainer = document.getElementById('carouselDots');
+            let activeIndex = 0;
+
+            if(!slides.length || !prev || !next || !dotsContainer) return;
+
+            function setSlide(index){
+                slides.forEach((slide, idx) => slide.classList.toggle('active', idx === index));
+                Array.from(dotsContainer.children).forEach((dot, idx) => dot.classList.toggle('active', idx === index));
+                activeIndex = index;
+            }
+
+            function createDots(){
+                slides.forEach((_, idx) => {
+                    const dot = document.createElement('button');
+                    dot.type = 'button';
+                    dot.className = 'dot';
+                    dot.setAttribute('aria-label', `Show slide ${idx + 1}`);
+                    dot.addEventListener('click', () => setSlide(idx));
+                    dotsContainer.appendChild(dot);
+                });
+            }
+
+            createDots();
+            setSlide(0);
+
+            prev.addEventListener('click', () => setSlide((activeIndex - 1 + slides.length) % slides.length));
+            next.addEventListener('click', () => setSlide((activeIndex + 1) % slides.length));
+
+            setInterval(() => setSlide((activeIndex + 1) % slides.length), 6000);
+        })();
+        </script>
+</body>
+</html>
