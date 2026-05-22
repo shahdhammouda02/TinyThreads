@@ -234,6 +234,14 @@
             updateAuthUI();
             toggleAuthMode('login');
         })();
+
+        (function(){
+            const cartCount = document.getElementById('cartCount');
+            const cart = JSON.parse(localStorage.getItem('tinythreadsCart') || '{}');
+            const total = Object.values(cart).reduce((sum, item) => sum + (item.quantity || 0), 0);
+            cartCount.textContent = total;
+            cartCount.style.display = total ? 'inline-flex' : 'none';
+        })();
     </script>
 </body>
 </html>

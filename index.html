@@ -359,9 +359,8 @@
             }
 
             function updateCartButtons(){
-                addCartButtons.forEach(button => {
-                    button.disabled = !currentUser;
-                });
+                // Keep add-to-cart buttons enabled for all visitors.
+                // If the user is not logged in, clicking will redirect to login.
             }
 
             function renderCart(){
