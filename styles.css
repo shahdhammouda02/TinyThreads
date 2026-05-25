@@ -188,6 +188,35 @@ a .eyebrow, .eyebrow{display:inline-block;text-transform:uppercase;letter-spacin
 
   /* Give brand a bit more left space on mobile */
   .brand{margin-left:12px}
+
+  /* Align section titles and content edges on mobile so headings and content start at same vertical level */
+  .section .card h4,
+  .section .card p,
+  .section .card-meta,
+  .category-card h4,
+  .testimonial-card p,
+  .section-intro p,
+  .newsletter-card h3,
+  .newsletter-card p {
+    padding-left:20px;
+    padding-right:20px;
+    margin-left:0;
+    box-sizing:border-box;
+  }
+
+  /* Align split section intro content (p and ul) with h3 title on mobile */
+  .section.split > div:first-child > p {
+    padding-left:20px;
+    padding-right:20px;
+  }
+  .section.split > div:first-child > .features {
+    padding-left:20px;
+    padding-right:20px;
+  }
+
+  /* Ensure category card h4 wraps text properly on mobile */
+  .category-grid{grid-template-columns:1fr;gap:16px}
+  .category-card h4{word-wrap:break-word;overflow-wrap:break-word;hyphens:auto;font-size:clamp(0.95rem,2vw,1.1rem)}
 }
 
 /* Small-screen adjustments for the subscribe form */
@@ -195,6 +224,15 @@ a .eyebrow, .eyebrow{display:inline-block;text-transform:uppercase;letter-spacin
   .signup-form{flex-direction:column;align-items:stretch}
   .signup-form input{width:100%;margin:0}
   .signup-form .btn{width:100%;margin-top:10px}
+
+  /* Add vertical breathing room for the newsletter on small screens */
+  .newsletter{padding-top:28px;padding-bottom:28px}
+  .newsletter-card{padding:20px;border-radius:18px}
+
+  /* Ensure category cards display properly on small mobile screens */
+  .category-card{text-align:center}
+  .category-card h4{margin:12px 16px;word-break:break-word}
+  .category-card .btn{margin:0 16px 16px;display:block;width:calc(100% - 32px)}
 }
 
 /* Keyboard focus styles */

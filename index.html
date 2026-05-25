@@ -356,6 +356,8 @@
                 localStorage.setItem(STORAGE_USER, JSON.stringify(currentUser));
                 localStorage.setItem(STORAGE_CART, JSON.stringify(cartMap));
                 localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+                // keep UI in sync with saved state (disable/enable add buttons)
+                updateCartButtons();
             }
 
             function formatMoney(value){
@@ -369,8 +371,18 @@
             }
 
             function updateCartButtons(){
-                // Keep add-to-cart buttons enabled for all visitors.
-                // If the user is not logged in, clicking will redirect to login.
+                // Disable add-to-cart buttons for items already in the current user's cart.
+                addCartButtons.forEach(button => {
+                    const article = button.closest('[data-item]');
+                    const name = article ? article.dataset.item : null;
+                    if(currentUser && name && cart[name] && cart[name].quantity > 0){
+                        button.disabled = true;
+                        button.textContent = 'Added';
+                    } else {
+                        button.disabled = false;
+                        button.textContent = 'Add to Cart';
+                    }
+                });
             }
 
             function renderCart(){
@@ -539,6 +551,8 @@
                     }
                     saveState();
                     updateCartCount();
+                    // reflect new per-user state on buttons
+                    updateCartButtons();
                 });
             });
 
