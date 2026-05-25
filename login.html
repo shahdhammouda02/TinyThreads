@@ -28,12 +28,7 @@
                         <span class="badge" id="cartCount">0</span>
                     </button>
                     <button id="authButton" class="icon-btn" type="button" aria-label="Login">
-                        <span class="icon">👤</span>
                         <span id="authLabel">Login</span>
-                    </button>
-                    <button id="logoutNavButton" class="icon-btn hidden" type="button" aria-label="Log out">
-                        <span class="icon">🚪</span>
-                        <span>Logout</span>
                     </button>
                 </div>
             </nav>
@@ -118,7 +113,6 @@
 
         (function(){
             const authButton = document.getElementById('authButton');
-            const logoutNavButton = document.getElementById('logoutNavButton');
             const switchModeButton = document.getElementById('switchModeButton');
             const authPrompt = document.getElementById('authPrompt');
             const confirmPasswordLabel = document.getElementById('confirmPasswordLabel');
@@ -145,20 +139,9 @@
             }
 
             function updateAuthUI(){
-                if(currentUser){
-                    authButton.querySelector('#authLabel').textContent = currentUser.name || currentUser.email.split('@')[0];
-                    authButton.setAttribute('aria-label', 'Account');
-                    logoutNavButton.classList.remove('hidden');
-                    authForm.querySelector('.btn-primary').textContent = 'Continue';
-                    authHeading.textContent = 'You are already signed in';
-                    authDescription.textContent = `Welcome back, ${currentUser.name || currentUser.email}. You can log out or head home.`;
-                } else {
-                    authButton.querySelector('#authLabel').textContent = 'Login';
-                    authButton.setAttribute('aria-label', 'Login');
-                    logoutNavButton.classList.add('hidden');
-                    authHeading.textContent = 'Login to your account';
-                    authDescription.textContent = 'Use your email and password to sign in, or create an account to start shopping.';
-                }
+                const label = authMode === 'signup' ? 'Sign up' : 'Login';
+                authButton.querySelector('#authLabel').textContent = label;
+                authButton.setAttribute('aria-label', label);
             }
 
             function toggleAuthMode(mode){
@@ -171,6 +154,7 @@
                     : 'Sign up with your email and a secure password.';
                 authPrompt.textContent = mode === 'login' ? "Don't have an account?" : 'Already have an account?';
                 switchModeButton.textContent = mode === 'login' ? 'Sign up' : 'Login';
+                updateAuthUI();
                 authMessage.classList.add('hidden');
             }
 
@@ -185,15 +169,6 @@
                 } else {
                     window.location.href = 'login.html';
                 }
-            });
-
-            logoutNavButton.addEventListener('click', function(){
-                currentUser = null;
-                saveState();
-                updateAuthUI();
-                const cartCount = document.getElementById('cartCount');
-                cartCount.textContent = '0';
-                cartCount.style.display = 'none';
             });
 
             switchModeButton.addEventListener('click', function(){
