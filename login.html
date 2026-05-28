@@ -28,9 +28,19 @@
                         <i class="bi bi-cart3 icon" aria-hidden="true"></i>
                         <span class="badge" id="cartCount">0</span>
                     </button>
-                    <button id="authButton" class="icon-btn" type="button" aria-label="Login">
-                        <span id="authLabel">Login</span>
+                    <button id="favoriteButton" class="icon-btn" type="button" aria-label="Open favorites">
+                        <i class="bi bi-heart icon" aria-hidden="true"></i>
+                        <span class="badge" id="favoriteCount">0</span>
                     </button>
+                    <div class="auth-dropdown">
+                        <button id="authButton" class="icon-btn" type="button" aria-label="Sign in" aria-haspopup="true" aria-expanded="false">
+                            <span id="authLabel">Login</span>
+                            <i class="bi bi-chevron-down dropdown-arrow hidden" id="authChevron" aria-hidden="true"></i>
+                        </button>
+                        <div id="authMenu" class="auth-menu hidden">
+                            <button type="button" id="logoutNavButton" class="auth-menu-item">Logout</button>
+                        </div>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -114,6 +124,9 @@
 
         (function(){
             const authButton = document.getElementById('authButton');
+            const authMenu = document.getElementById('authMenu');
+            const authChevron = document.getElementById('authChevron');
+            const logoutNavButton = document.getElementById('logoutNavButton');
             const switchModeButton = document.getElementById('switchModeButton');
             const authPrompt = document.getElementById('authPrompt');
             const confirmPasswordLabel = document.getElementById('confirmPasswordLabel');
@@ -140,9 +153,17 @@
             }
 
             function updateAuthUI(){
-                const label = authMode === 'signup' ? 'Sign up' : 'Login';
-                authButton.querySelector('#authLabel').textContent = label;
-                authButton.setAttribute('aria-label', label);
+                if(currentUser){
+                    const userName = currentUser.name || currentUser.email.split('@')[0];
+                    authButton.querySelector('#authLabel').textContent = `Welcome, ${userName}`;
+                    authButton.setAttribute('aria-label', `Account menu for ${userName}`);
+                    authChevron.classList.remove('hidden');
+                } else {
+                    const label = authMode === 'signup' ? 'Sign up' : 'Login';
+                    authButton.querySelector('#authLabel').textContent = label;
+                    authButton.setAttribute('aria-label', label);
+                    authChevron.classList.add('hidden');
+                }
             }
 
             function toggleAuthMode(mode){
@@ -164,11 +185,26 @@
                 localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
             }
 
-            authButton.addEventListener('click', function(){
+            authButton.addEventListener('click', function(event){
+                event.stopPropagation();
                 if(currentUser){
-                    window.location.href = 'index.html';
+                    authMenu.classList.toggle('hidden');
+                    authButton.setAttribute('aria-expanded', authMenu.classList.contains('hidden') ? 'false' : 'true');
                 } else {
                     window.location.href = 'login.html';
+                }
+            });
+
+            logoutNavButton.addEventListener('click', () => {
+                currentUser = null;
+                localStorage.setItem(STORAGE_USER, 'null');
+                window.location.reload();
+            });
+
+            document.addEventListener('click', function(event){
+                if(currentUser && !authMenu.classList.contains('hidden') && !event.target.closest('.auth-dropdown')){
+                    authMenu.classList.add('hidden');
+                    authButton.setAttribute('aria-expanded', 'false');
                 }
             });
 
@@ -216,13 +252,22 @@
 
         (function(){
             const cartCount = document.getElementById('cartCount');
+            const favoriteCount = document.getElementById('favoriteCount');
             const STORAGE_CART = 'tinythreadsCartByUser';
+            const STORAGE_FAVORITES = 'tinythreadsFavoritesByUser';
             const currentUser = JSON.parse(localStorage.getItem('tinythreadsUser') || 'null');
+
             const cartMap = JSON.parse(localStorage.getItem(STORAGE_CART) || '{}');
             const cart = currentUser ? (cartMap[currentUser.email] || {}) : {};
-            const total = Object.values(cart).reduce((sum, item) => sum + (item.quantity || 0), 0);
-            cartCount.textContent = total;
-            cartCount.style.display = total ? 'inline-flex' : 'none';
+            const cartTotal = Object.values(cart).reduce((sum, item) => sum + (item.quantity || 0), 0);
+            cartCount.textContent = cartTotal;
+            cartCount.style.display = cartTotal ? 'inline-flex' : 'none';
+
+            const favoriteMap = JSON.parse(localStorage.getItem(STORAGE_FAVORITES) || '{}');
+            const favorites = currentUser ? (favoriteMap[currentUser.email] || {}) : {};
+            const favTotal = Object.keys(favorites).length;
+            favoriteCount.textContent = favTotal;
+            favoriteCount.style.display = favTotal ? 'inline-flex' : 'none';
         })();
     </script>
 </body>

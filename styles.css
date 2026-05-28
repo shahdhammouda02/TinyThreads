@@ -29,8 +29,10 @@ html,body{height:100%;margin:0;background:var(--bg);color:#0f172a}
 .icon, .dropdown-arrow{display:inline-flex;align-items:center;justify-content:center;font-size:1rem;line-height:1}
 .badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:0.8rem;border-radius:999px;background:var(--accent);color:#fff}
 #cartButton{position:relative}
+#cartButton{position:relative;width:38px;height:38px;padding:0;gap:0}
 #cartButton .badge{position:absolute;top:0;right:0;transform:translate(30%,-30%);width:18px;height:18px;font-size:0.72rem;padding:0;}
 #favoriteButton{position:relative}
+#favoriteButton{position:relative;width:38px;height:38px;padding:0;gap:0}
 #favoriteButton .badge{position:absolute;top:0;right:0;transform:translate(30%,-30%);width:18px;height:18px;font-size:0.72rem;padding:0;}
 .cart-row-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .cart-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
@@ -84,7 +86,15 @@ html,body{height:100%;margin:0;background:var(--bg);color:#0f172a}
 .card-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .favorite-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;padding:0;border-radius:10px;color:#6b7280;background:#fff;line-height:1}
 .favorite-btn.active{color:#ef4444;border-color:rgba(239,68,68,0.25);background:rgba(255,241,242,0.95)}
-.favorite-btn .favorite-icon{display:flex;align-items:center;justify-content:center;font-size:1rem;line-height:1;width:1em;height:1em}
+.favorite-btn .favorite-icon{font-size:1rem;line-height:1;vertical-align:middle}
+/* Large screen: perfectly center Bootstrap Icon glyph in all cards */
+@media (min-width:901px){
+  .card .favorite-btn,
+  .category-card .favorite-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;padding:0;font-size:0;line-height:1}
+  .card .favorite-btn .favorite-icon,
+  .category-card .favorite-btn .favorite-icon{display:inline-block;font-size:1rem;line-height:1;width:1rem;height:1rem;vertical-align:top}
+  #favoriteButton .icon{display:inline-flex;align-items:center;justify-content:center;line-height:1;font-size:1rem}
+}
 
 .grid-4{grid-template-columns:repeat(4,minmax(0,1fr));}
 .category-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
@@ -164,6 +174,27 @@ a .eyebrow, .eyebrow{display:inline-block;text-transform:uppercase;letter-spacin
   .nav-actions{margin-left:0;flex-wrap:wrap;justify-content:flex-start}
   .auth-header{flex-direction:column;align-items:flex-start}
   .form-actions{width:100%}
+
+    .auth-page{
+    padding-top:100px;
+    padding-bottom:80px;
+  }
+
+  .auth-card{
+    margin-top:20px;
+    margin-bottom:20px;
+    padding:36px 24px;
+  }
+
+  .auth-header{
+    margin-top:12px;
+    margin-bottom:32px;
+  }
+
+  .auth-footer{
+    margin-top:28px;
+    padding-bottom:10px;
+  }
 }
 
 
