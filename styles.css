@@ -24,11 +24,14 @@ html,body{height:100%;margin:0;background:var(--bg);color:#0f172a}
 .auth-menu.hidden{display:none}
 .auth-menu-item{display:block;width:100%;text-align:left;padding:12px 16px;border:none;background:none;color:#0f172a;cursor:pointer;font-size:0.95rem}
 .auth-menu-item:hover{background:rgba(245,158,11,0.12)}
-.icon-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(245,158,11,0.22);border-radius:12px;background:#fff;color:#0f172a;cursor:pointer;transition:transform 0.2s ease,background 0.2s ease}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:8px 12px;border:1px solid rgba(245,158,11,0.22);border-radius:12px;background:#fff;color:#0f172a;cursor:pointer;transition:transform 0.2s ease,background 0.2s ease}
 .icon-btn:hover{background:#fffbf5;transform:translateY(-1px)}
+.icon, .dropdown-arrow{display:inline-flex;align-items:center;justify-content:center;font-size:1rem;line-height:1}
 .badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:0.8rem;border-radius:999px;background:var(--accent);color:#fff}
 #cartButton{position:relative}
 #cartButton .badge{position:absolute;top:0;right:0;transform:translate(30%,-30%);width:18px;height:18px;font-size:0.72rem;padding:0;}
+#favoriteButton{position:relative}
+#favoriteButton .badge{position:absolute;top:0;right:0;transform:translate(30%,-30%);width:18px;height:18px;font-size:0.72rem;padding:0;}
 .cart-row-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .cart-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
 .cart-delete{border-color:rgba(220,38,38,0.25);color:#dc2626}
@@ -76,8 +79,12 @@ html,body{height:100%;margin:0;background:var(--bg);color:#0f172a}
 .card:hover img{transform:scale(1.05)}
 .card h4{margin:14px 18px 6px}
 .card p{margin:0 18px 18px;color:var(--muted);font-size:0.95rem;line-height:1.7}
-.card-meta{display:flex;align-items:center;justify-content:space-between;padding:0 18px 18px}
+.card-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 18px 18px}
 .card-meta strong{color:#0f172a}
+.card-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.favorite-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;padding:0;border-radius:10px;color:#6b7280;background:#fff;line-height:1}
+.favorite-btn.active{color:#ef4444;border-color:rgba(239,68,68,0.25);background:rgba(255,241,242,0.95)}
+.favorite-btn .favorite-icon{display:flex;align-items:center;justify-content:center;font-size:1rem;line-height:1;width:1em;height:1em}
 
 .grid-4{grid-template-columns:repeat(4,minmax(0,1fr));}
 .category-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
@@ -87,6 +94,9 @@ html,body{height:100%;margin:0;background:var(--bg);color:#0f172a}
 .category-card:hover img{transform:scale(1.05)}
 .category-card h4{margin:16px 12px 18px;color:#0f172a;transition:color 0.25s ease}
 .category-card:hover h4{color:var(--accent)}
+.category-actions{display:flex;align-items:center;gap:8px;margin:0 12px 16px;min-width:0}
+.category-actions .add-cart-btn{flex:1;margin:0;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.category-actions .favorite-btn{flex:0 0 38px;width:38px;min-width:38px;margin:0}
 
 .testimonial-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .testimonial-card{background:#fff;border-radius:20px;border:1px solid rgba(244,212,187,0.7);padding:24px;box-shadow:0 8px 24px rgba(15,23,42,0.05);transition:transform 0.35s ease,box-shadow 0.35s ease}
@@ -124,12 +134,17 @@ html,body{height:100%;margin:0;background:var(--bg);color:#0f172a}
 .cart-total{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;border-top:1px solid #f3f4f6}
 .empty-cart{margin:0;color:var(--muted);font-size:0.98rem}
 
-.cart-overlay{position:fixed;inset:0;display:none;justify-content:flex-end;z-index:90;}
-.cart-overlay.show{display:flex;}
+.cart-overlay, .favorites-overlay{position:fixed;inset:0;display:none;justify-content:flex-end;z-index:90;}
+.cart-overlay.show, .favorites-overlay.show{display:flex;}
 .cart-overlay-backdrop{position:absolute;inset:0;background:rgba(15,23,42,0.42);}
-.cart-overlay .cart-card{position:relative;margin-left:auto;width:380px;max-width:100%;height:100%;border-radius:0 0 0 28px;background:#fff;box-shadow:-24px 0 60px rgba(15,23,42,0.18);overflow-y:auto;padding:32px;}
+.cart-overlay .cart-card, .favorites-overlay .favorites-card{position:relative;margin-left:auto;width:380px;max-width:100%;height:100%;border-radius:0 0 0 28px;background:#fff;box-shadow:-24px 0 60px rgba(15,23,42,0.18);overflow-y:auto;padding:32px;}
+.favorite-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-top:1px solid #f5f5f5}
+.favorite-row:first-child{border-top:none}
+.favorite-row p{margin:4px 0 0;color:var(--muted)}
+.favorite-remove{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;padding:0;border-radius:10px;color:#ef4444;border-color:rgba(239,68,68,0.25)}
+.favorite-remove:hover{background:rgba(254,242,242,0.9);border-color:rgba(239,68,68,0.35)}
 
-.split{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
+.split{display:grid;grid-template-columns:1fr 1.4fr;gap:28px;align-items:start}
 .features{padding-left:18px;color:var(--muted)}
 
 .signup-form{display:flex;gap:8px;margin-top:12px}
@@ -172,10 +187,11 @@ a .eyebrow, .eyebrow{display:inline-block;text-transform:uppercase;letter-spacin
   .nav a{margin-left:12px}
   .nav-toggle{display:block}
   /* mobile menu: hidden by default, shown when .open */
-  .nav{display:none;position:fixed;top:64px;right:20px;background:#fff;padding:14px;border-radius:12px;box-shadow:0 10px 30px rgba(15,23,42,0.08);flex-direction:column;min-width:180px;z-index:60}
+  .nav{display:none;position:fixed;top:64px;left:50%;transform:translateX(-50%);background:#fff;padding:14px 24px;border-radius:12px;box-shadow:0 10px 30px rgba(15,23,42,0.08);flex-direction:column;align-items:center;min-width:200px;z-index:60}
   .nav.open{display:flex}
-  .nav a{margin:8px 0}
-  .nav a.cta{margin-top:6px}
+  .nav a{margin:8px 0;text-align:center;width:100%}
+  .nav a.cta{margin-top:6px;text-align:center}
+  .nav-actions{justify-content:center;width:100%;margin-top:8px}
 
   /* Move section heading padding to mobile only and align content under titles */
   .section-title, .section h3 {padding:0 20px;box-sizing:border-box}
@@ -188,6 +204,14 @@ a .eyebrow, .eyebrow{display:inline-block;text-transform:uppercase;letter-spacin
 
   /* Give brand a bit more left space on mobile */
   .brand{margin-left:12px}
+
+  /* Best sellers: price on top, then add-to-cart + fav side by side */
+  .section .card .card-meta{flex-direction:column;align-items:flex-start;gap:10px;padding:0 18px 18px}
+  .section .card .card-meta strong{font-size:1.05rem}
+  .section .card .card-actions{width:100%;display:flex;flex-direction:row;align-items:center;gap:8px}
+  .section .card .card-actions .add-cart-btn{flex:1;white-space:nowrap;text-align:center;display:inline-flex;align-items:center;justify-content:center}
+  .section .card .card-actions .favorite-btn{flex:0 0 38px;width:38px;height:38px;min-width:38px;display:inline-flex;align-items:center;justify-content:center;padding:0}
+  .section .card .card-actions .favorite-btn .favorite-icon{display:flex;align-items:center;justify-content:center;line-height:1}
 
   /* Align section titles and content edges on mobile so headings and content start at same vertical level */
   .section .card h4,
@@ -233,6 +257,11 @@ a .eyebrow, .eyebrow{display:inline-block;text-transform:uppercase;letter-spacin
   .category-card{text-align:center}
   .category-card h4{margin:12px 16px;word-break:break-word}
   .category-card .btn{margin:0 16px 16px;display:block;width:calc(100% - 32px)}
+  .category-actions{margin:0 16px 16px;display:flex;align-items:center;gap:10px}
+  .category-actions .btn{margin:0;width:auto;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;white-space:nowrap}
+  .category-actions .add-cart-btn{flex:1;text-align:center;justify-content:center}
+  .category-actions .favorite-btn{flex:0 0 38px;width:38px;height:38px;min-width:38px;display:inline-flex;align-items:center;justify-content:center;padding:0}
+  .category-actions .favorite-btn .favorite-icon{display:flex;align-items:center;justify-content:center;line-height:1}
 }
 
 /* Keyboard focus styles */
