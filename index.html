@@ -113,7 +113,7 @@
                 <p>Our top kids clothing picks for comfy school outfits, weekend play, and everyday style.</p>
             </div>
             <div class="cards grid-4">
-                <article class="card" data-item="Kids Sneakers" data-price="34.99">
+                <article class="card" tabindex="0" data-id="kids-sneakers" data-item="Kids Sneakers" data-price="34.99">
                     <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/4987534/pexels-photo-4987534.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Kids colorful sneakers">
                     <h4>Kids Sneakers</h4>
                     <p>Bold colors, grippy soles, and a fun fit that stays comfortable all day.</p>
@@ -127,7 +127,7 @@
                         </div>
                     </div>
                 </article>
-                <article class="card" data-item="Denim Jacket" data-price="44.99">
+                <article class="card" tabindex="0" data-id="denim-jacket" data-item="Denim Jacket" data-price="44.99">
                     <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/3934038/pexels-photo-3934038.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Kids wearing a denim jacket">
                     <h4>Denim Jacket</h4>
                     <p>Lightweight layering with a classic look for cooler mornings and park days.</p>
@@ -141,7 +141,7 @@
                         </div>
                     </div>
                 </article>
-                <article class="card" data-item="Graphic Tee" data-price="18.99">
+                <article class="card" tabindex="0" data-id="graphic-tee" data-item="Graphic Tee" data-price="18.99">
                     <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/1073083/pexels-photo-1073083.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Kids graphic t-shirt">
                     <h4>Graphic Tee</h4>
                     <p>Soft cotton tees with playful prints that make getting dressed fun.</p>
@@ -155,7 +155,7 @@
                         </div>
                     </div>
                 </article>
-                <article class="card" data-item="Stretch Jeans" data-price="32.99">
+                <article class="card" tabindex="0" data-id="stretch-jeans" data-item="Stretch Jeans" data-price="32.99">
                     <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/27177703/pexels-photo-27177703.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Kids denim jeans">
                     <h4>Stretch Jeans</h4>
                     <p>Classic denim with added stretch for running, jumping, and climbing.</p>
@@ -169,6 +169,9 @@
                         </div>
                     </div>
                 </article>
+            </div>
+            <div class="section-footer">
+                <a href="collections.html" class="btn btn-outline">Show more collections</a>
             </div>
         </section>
 
@@ -184,36 +187,36 @@
                 </ul>
             </div>
             <div class="category-grid">
-                <article class="category-card" data-item="Jackets" data-price="29.99">
+                <article class="category-card" tabindex="0" data-id="jackets" data-item="Jackets" data-price="29.99">
                     <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/37478758/pexels-photo-37478758.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Kids jacket outdoors">
-                    <h4>Jackets</h4>
-                    <div class="category-actions">
-                        <button class="btn btn-outline add-cart-btn" type="button">Add to Cart</button>
+                    <div class="category-heading">
+                        <h4>Jackets</h4>
                         <button class="btn btn-outline favorite-btn" type="button" aria-label="Save Jackets" aria-pressed="false">
                             <i class="bi bi-heart favorite-icon" aria-hidden="true"></i>
                         </button>
                     </div>
                 </article>
-                <article class="category-card" data-item="Jeans" data-price="25.99">
+                <article class="category-card" tabindex="0" data-id="jeans" data-item="Jeans" data-price="25.99">
                     <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/17839401/pexels-photo-17839401.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Kids wearing jeans">
-                    <h4>Jeans</h4>
-                    <div class="category-actions">
-                        <button class="btn btn-outline add-cart-btn" type="button">Add to Cart</button>
+                    <div class="category-heading">
+                        <h4>Jeans</h4>
                         <button class="btn btn-outline favorite-btn" type="button" aria-label="Save Jeans" aria-pressed="false">
                             <i class="bi bi-heart favorite-icon" aria-hidden="true"></i>
                         </button>
                     </div>
                 </article>
-                <article class="category-card" data-item="Shoes" data-price="22.99">
+                <article class="category-card" tabindex="0" data-id="shoes" data-item="Shoes" data-price="22.99">
                     <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/20406227/pexels-photo-20406227.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Kids sneakers on a floor">
-                    <h4>Shoes</h4>
-                    <div class="category-actions">
-                        <button class="btn btn-outline add-cart-btn" type="button">Add to Cart</button>
+                    <div class="category-heading">
+                        <h4>Shoes</h4>
                         <button class="btn btn-outline favorite-btn" type="button" aria-label="Save Shoes" aria-pressed="false">
                             <i class="bi bi-heart favorite-icon" aria-hidden="true"></i>
                         </button>
                     </div>
                 </article>
+            </div>
+            <div class="section-footer">
+                <a href="collections.html" class="btn btn-outline">Explore more collections</a>
             </div>
         </section>
 
@@ -464,6 +467,9 @@
                 updateCartButtons();
                 updateFavoriteButtons();
                 updateFavoriteCount();
+                if(cartOverlay && !cartOverlay.classList.contains('hidden')){
+                    renderCart();
+                }
             }
 
             function formatMoney(value){ return '$' + Number(value).toFixed(2); }
@@ -679,7 +685,7 @@
                     const name = article.dataset.item;
                     const price = Number(article.dataset.price || 0);
                     if(cart[name]){ cart[name].quantity += 1; } else { cart[name] = { name, price, quantity: 1 }; }
-                    saveState(); updateCartCount(); updateCartButtons();
+                    saveState(); updateCartCount(); updateCartButtons(); renderCart();
                 });
             });
 
@@ -688,6 +694,23 @@
                     const article = button.closest('[data-item]');
                     if(!article) return;
                     toggleFavorite(article.dataset.item, Number(article.dataset.price || 0));
+                });
+            });
+
+            const navigableCards = Array.from(document.querySelectorAll('[data-id]'));
+            navigableCards.forEach(card => {
+                card.addEventListener('click', function(event){
+                    if(event.target.closest('button, a')) return;
+                    const itemId = card.dataset.id;
+                    if(!itemId) return;
+                    window.location.href = `details.html?id=${encodeURIComponent(itemId)}`;
+                });
+                card.addEventListener('keydown', function(event){
+                    if(event.key !== 'Enter') return;
+                    if(event.target.closest('button, a')) return;
+                    const itemId = card.dataset.id;
+                    if(!itemId) return;
+                    window.location.href = `details.html?id=${encodeURIComponent(itemId)}`;
                 });
             });
 

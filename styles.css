@@ -72,8 +72,9 @@ html,body{height:100%;margin:0;background:var(--bg);color:#0f172a}
 
 .section{padding:56px 0}
 .section-title{margin:0 0 12px}
-.section-intro{max-width:700px;margin-bottom:30px;color:#334155}
+.section-intro{max-width:700px;margin-bottom:30px; color:#334155}
 .section-intro p{margin:10px 0 0;color:var(--muted);font-size:1rem;line-height:1.8}
+.section-footer{margin-top:24px}
 .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .card{background:#fff;border-radius:22px;box-shadow:0 10px 30px rgba(15,23,42,0.08);overflow:hidden;transition:transform 0.35s ease,box-shadow 0.35s ease}
 .card:hover{transform:translateY(-6px);box-shadow:0 20px 45px rgba(15,23,42,0.12)}
@@ -97,13 +98,26 @@ html,body{height:100%;margin:0;background:var(--bg);color:#0f172a}
 }
 
 .grid-4{grid-template-columns:repeat(4,minmax(0,1fr));}
+.grid-3{grid-template-columns:repeat(3,minmax(0,1fr));}
 .category-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.collection-card{display:flex;flex-direction:column;gap:14px}
+  .collection-card img{width:100%;height:190px;object-fit:contain;object-position:center;display:block;background:#f8fafc}
+.collection-category .category-description{margin:0 0 18px;color:var(--muted);font-size:0.98rem;line-height:1.7;max-width:680px}
+.category-note{margin:0 0 18px;color:#475569;font-size:0.95rem;line-height:1.6}
+.hidden-card{display:none}
+.section-footer{margin-top:24px;display:flex;justify-content:center;flex-wrap:wrap;gap:12px}
+.toggle-category{min-width:160px}
+.collection-hero{background:radial-gradient(circle at top center, rgba(245,158,11,0.14), transparent 26%), radial-gradient(circle at 30% 20%, rgba(249,115,22,0.08), transparent 12%), linear-gradient(180deg, #fff9f3 0%, #fff7eb 70%, rgba(255,255,255,0.95) 100%);background-attachment:fixed;background-size:cover;border-radius:30px;padding:64px 0 56px;margin-top:48px;margin-bottom:32px;box-shadow:0 24px 50px rgba(15,23,42,0.08);}
+.collection-hero .section-intro{max-width:700px;margin:0 auto;text-align:center;}
+.collection-hero .section-intro p{margin-top:12px;}
 .category-card{background:#fff;border-radius:22px;box-shadow:0 12px 26px rgba(15,23,42,0.08);overflow:hidden;text-align:center;transition:transform 0.35s ease,box-shadow 0.35s ease}
 .category-card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(15,23,42,0.12)}
 .category-card img{width:100%;height:180px;object-fit:cover;display:block;transition:transform 0.5s ease}
 .category-card:hover img{transform:scale(1.05)}
-.category-card h4{margin:16px 12px 18px;color:#0f172a;transition:color 0.25s ease}
+.category-card h4{margin:0;color:#0f172a;transition:color 0.25s ease}
 .category-card:hover h4{color:var(--accent)}
+.category-heading{display:flex;align-items:center;justify-content:center;gap:10px;margin:16px 12px 16px;}
+.category-heading h4{margin:0;}
 .category-actions{display:flex;align-items:center;gap:8px;margin:0 12px 16px;min-width:0}
 .category-actions .add-cart-btn{flex:1;margin:0;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .category-actions .favorite-btn{flex:0 0 38px;width:38px;min-width:38px;margin:0}
@@ -206,6 +220,21 @@ a .eyebrow, .eyebrow{display:inline-block;text-transform:uppercase;letter-spacin
 .footer-nav a{margin-left:12px;color:var(--muted);text-decoration:none;transition:color 0.25s ease}
 .footer-nav a:hover{color:var(--accent)}
 
+.section-footer{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.split .section-footer {
+    grid-column: 1 / -1;
+}
+.detail-page .detail-hero{display:grid;grid-template-columns:1.08fr 0.92fr;gap:30px;align-items:start}
+.detail-page .detail-image img{width:100%;height:auto;display:block;border-radius:24px}
+.detail-page .detail-panel{display:flex;flex-direction:column;gap:18px}
+.detail-page .detail-panel h1{margin:0}
+.detail-page .detail-panel .detail-meta{display:grid;gap:12px}
+.detail-page .detail-panel label{display:block;font-weight:700;color:#334155;margin-bottom:8px}
+.detail-page .detail-panel select{width:100%;padding:12px 14px;border:1px solid #e5e7eb;border-radius:14px;background:#fff}
+.detail-page .detail-panel .detail-actions{display:flex;gap:12px;flex-wrap:wrap}
+.collection-category{margin-top:40px}
+.collection-category h4{margin-bottom:18px}
+  .collection-card img{width:100%;height:190px;object-fit:contain;object-position:center;display:block;background:#f8fafc}
 @media (max-width:900px){
   .hero-inner{grid-template-columns:1fr}
   .hero-slider{max-width:100%}

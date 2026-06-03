@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinyThreads | Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <h1 class="brand"><a href="index.html">TinyThreads</a></h1>
+            <button class="nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Toggle menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <nav id="site-nav" class="nav" role="navigation">
+                <a href="index.html">Home</a>
+                <a href="collections.html">Collections</a>
+                <a href="index.html#categories">Categories</a>
+                <a href="index.html#contact" class="cta">Shop</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section class="container section detail-page">
+            <div id="detailContent"></div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>&copy; 2026 TinyThreads. Little outfits, big smiles.</p>
+            <nav class="footer-nav">
+                <a href="index.html#privacy">Privacy</a>
+                <a href="index.html#terms">Terms</a>
+            </nav>
+        </div>
+    </footer>
+    <script>
+        const items = {
+            'kids-sneakers': {
+                name: 'Kids Sneakers',
+                category: 'Shoes',
+                price: 34.99,
+                description: 'Bright, cushioned sneakers for all-day play.',
+                colors: ['Blue', 'Yellow', 'Pink'],
+                image: 'https://images.pexels.com/photos/4987534/pexels-photo-4987534.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['7', '8', '9', '10', '11'],
+                ages: ['1-2 years', '2-3 years', '3-4 years', '4-5 years'],
+                heights: ['33-36 in', '36-39 in', '39-42 in', '42-45 in'],
+                weights: ['22-25 lbs', '25-28 lbs', '28-32 lbs', '32-36 lbs']
+            },
+            'denim-jacket': {
+                name: 'Denim Jacket',
+                category: 'Jackets',
+                price: 44.99,
+                description: 'A classic denim jacket with just enough stretch for everyday adventures.',
+                colors: ['Blue', 'Black', 'Grey'],
+                image: 'https://images.pexels.com/photos/3934038/pexels-photo-3934038.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['2Y', '3Y', '4Y', '5Y', '6Y'],
+                ages: ['2 years', '3 years', '4 years', '5 years', '6 years'],
+                heights: ['35-38 in', '38-41 in', '41-44 in', '44-47 in', '47-50 in'],
+                weights: ['24-28 lbs', '28-31 lbs', '31-35 lbs', '35-39 lbs', '39-43 lbs']
+            },
+            'graphic-tee': {
+                name: 'Graphic Tee',
+                category: 'Playwear',
+                price: 18.99,
+                description: 'Soft cotton tee with playful print and a relaxed fit.',
+                colors: ['White', 'Coral', 'Soft blue'],
+                image: 'https://images.pexels.com/photos/1073083/pexels-photo-1073083.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['18M', '2Y', '3Y', '4Y', '5Y'],
+                ages: ['18 months', '2 years', '3 years', '4 years', '5 years'],
+                heights: ['30-34 in', '34-38 in', '38-42 in', '42-46 in', '46-50 in'],
+                weights: ['22-24 lbs', '24-28 lbs', '28-32 lbs', '32-36 lbs', '36-40 lbs']
+            },
+            'stretch-jeans': {
+                name: 'Stretch Jeans',
+                category: 'Jeans',
+                price: 32.99,
+                description: 'Comfort stretch denim made for running, climbing, and everyday wear.',
+                colors: ['Indigo', 'Black', 'Light blue'],
+                image: 'https://images.pexels.com/photos/27177703/pexels-photo-27177703.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['3Y', '4Y', '5Y', '6Y', '7Y'],
+                ages: ['3 years', '4 years', '5 years', '6 years', '7 years'],
+                heights: ['36-39 in', '39-42 in', '42-45 in', '45-48 in', '48-51 in'],
+                weights: ['28-32 lbs', '32-36 lbs', '36-40 lbs', '40-44 lbs', '44-48 lbs']
+            },
+            'play-jacket': {
+                name: 'Play Jacket',
+                category: 'Jackets',
+                price: 39.99,
+                description: 'Water-resistant play jacket with a soft hood and easy movement.',
+                colors: ['Blue', 'Yellow', 'Orange'],
+                image: 'https://images.pexels.com/photos/2165137/pexels-photo-2165137.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['2Y', '3Y', '4Y', '5Y', '6Y'],
+                ages: ['2 years', '3 years', '4 years', '5 years', '6 years'],
+                heights: ['35-38 in', '38-41 in', '41-44 in', '44-47 in', '47-50 in'],
+                weights: ['24-28 lbs', '28-31 lbs', '31-35 lbs', '35-39 lbs', '39-43 lbs']
+            },
+            'puffer-jacket': {
+                name: 'Puffer Jacket',
+                category: 'Jackets',
+                price: 49.99,
+                description: 'Cozy quilted jacket for extra warmth and easy layering.',
+                colors: ['Red', 'Navy', 'Teal'],
+                image: 'https://images.pexels.com/photos/1302442/pexels-photo-1302442.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['2Y', '3Y', '4Y', '5Y', '6Y'],
+                ages: ['2 years', '3 years', '4 years', '5 years', '6 years'],
+                heights: ['35-38 in', '38-41 in', '41-44 in', '44-47 in', '47-50 in'],
+                weights: ['24-28 lbs', '28-31 lbs', '31-35 lbs', '35-39 lbs', '39-43 lbs']
+            },
+            'rain-jacket': {
+                name: 'Rain Jacket',
+                category: 'Jackets',
+                price: 42.99,
+                description: 'Lightweight, splash-proof jacket for damp weather fun.',
+                colors: ['Yellow', 'Pink', 'Green'],
+                image: 'https://images.pexels.com/photos/6033056/pexels-photo-6033056.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['2Y', '3Y', '4Y', '5Y', '6Y'],
+                ages: ['2 years', '3 years', '4 years', '5 years', '6 years'],
+                heights: ['35-38 in', '38-41 in', '41-44 in', '44-47 in', '47-50 in'],
+                weights: ['24-28 lbs', '28-31 lbs', '31-35 lbs', '35-39 lbs', '39-43 lbs']
+            },
+            'soft-jeans': {
+                name: 'Soft Jeans',
+                category: 'Jeans',
+                price: 29.99,
+                description: 'Soft denim with stretch that keeps up with active kids.',
+                colors: ['Blue', 'Stone wash', 'Charcoal'],
+                image: 'https://images.pexels.com/photos/2886821/pexels-photo-2886821.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['3Y', '4Y', '5Y', '6Y', '7Y'],
+                ages: ['3 years', '4 years', '5 years', '6 years', '7 years'],
+                heights: ['36-39 in', '39-42 in', '42-45 in', '45-48 in', '48-51 in'],
+                weights: ['28-32 lbs', '32-36 lbs', '36-40 lbs', '40-44 lbs', '44-48 lbs']
+            },
+            'denim-shorts': {
+                name: 'Denim Shorts',
+                category: 'Jeans',
+                price: 27.99,
+                description: 'Cool cropped denim designed for sunny days and active play.',
+                colors: ['Blue', 'Light wash', 'Dark wash'],
+                image: 'https://images.pexels.com/photos/1239301/pexels-photo-1239301.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['3Y', '4Y', '5Y', '6Y', '7Y'],
+                ages: ['3 years', '4 years', '5 years', '6 years', '7 years'],
+                heights: ['36-39 in', '39-42 in', '42-45 in', '45-48 in', '48-51 in'],
+                weights: ['28-32 lbs', '32-36 lbs', '36-40 lbs', '40-44 lbs', '44-48 lbs']
+            },
+            'slim-jeans': {
+                name: 'Slim Jeans',
+                category: 'Jeans',
+                price: 33.50,
+                description: 'Neat fit denim with a soft waistband for extra comfort.',
+                colors: ['Indigo', 'Navy', 'Grey'],
+                image: 'https://images.pexels.com/photos/1662631/pexels-photo-1662631.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['3Y', '4Y', '5Y', '6Y', '7Y'],
+                ages: ['3 years', '4 years', '5 years', '6 years', '7 years'],
+                heights: ['36-39 in', '39-42 in', '42-45 in', '45-48 in', '48-51 in'],
+                weights: ['28-32 lbs', '32-36 lbs', '36-40 lbs', '40-44 lbs', '44-48 lbs']
+            },
+            'high-top-sneakers': {
+                name: 'High-Top Sneakers',
+                category: 'Shoes',
+                price: 38.99,
+                description: 'Supportive high-top style with cushioned comfort.',
+                colors: ['Black', 'White', 'Red'],
+                image: 'https://images.pexels.com/photos/2816486/pexels-photo-2816486.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['8', '9', '10', '11', '12'],
+                ages: ['2 years', '3 years', '4 years', '5 years', '6 years'],
+                heights: ['36-39 in', '39-42 in', '42-45 in', '45-48 in', '48-51 in'],
+                weights: ['24-28 lbs', '28-32 lbs', '32-36 lbs', '36-40 lbs', '40-44 lbs']
+            },
+            'slip-on-shoes': {
+                name: 'Slip-On Shoes',
+                category: 'Shoes',
+                price: 31.49,
+                description: 'Easy pull-on shoes for fast mornings and quick comfort.',
+                colors: ['Coral', 'Mint', 'Navy'],
+                image: 'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['7', '8', '9', '10', '11'],
+                ages: ['1 year', '2 years', '3 years', '4 years', '5 years'],
+                heights: ['33-36 in', '36-39 in', '39-42 in', '42-45 in', '45-48 in'],
+                weights: ['22-25 lbs', '25-28 lbs', '28-32 lbs', '32-36 lbs', '36-40 lbs']
+            },
+            'sport-shoes': {
+                name: 'Sport Shoes',
+                category: 'Shoes',
+                price: 36.99,
+                description: 'Breathable mesh runners made for playground energy.',
+                colors: ['Grey', 'Blue', 'Green'],
+                image: 'https://images.pexels.com/photos/15745334/pexels-photo-15745334.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['8', '9', '10', '11', '12'],
+                ages: ['2 years', '3 years', '4 years', '5 years', '6 years'],
+                heights: ['36-39 in', '39-42 in', '42-45 in', '45-48 in', '48-51 in'],
+                weights: ['24-28 lbs', '28-32 lbs', '32-36 lbs', '36-40 lbs', '40-44 lbs']
+            },
+            'cozy-hoodie': {
+                name: 'Cozy Hoodie',
+                category: 'Playwear',
+                price: 24.99,
+                description: 'Everyday hoodie with soft fleece and roomy comfort.',
+                colors: ['Grey', 'Lavender', 'Sage'],
+                image: 'https://images.pexels.com/photos/1556710/pexels-photo-1556710.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['18M', '2Y', '3Y', '4Y', '5Y'],
+                ages: ['18 months', '2 years', '3 years', '4 years', '5 years'],
+                heights: ['30-34 in', '34-38 in', '38-42 in', '42-46 in', '46-50 in'],
+                weights: ['22-24 lbs', '24-28 lbs', '28-32 lbs', '32-36 lbs', '36-40 lbs']
+            },
+            'lounge-set': {
+                name: 'Lounge Set',
+                category: 'Playwear',
+                price: 29.49,
+                description: 'Soft matching set for rest days and relaxed play.',
+                colors: ['Cream', 'Dusty rose', 'Sky blue'],
+                image: 'https://images.pexels.com/photos/16137094/pexels-photo-16137094.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['18M', '2Y', '3Y', '4Y', '5Y'],
+                ages: ['18 months', '2 years', '3 years', '4 years', '5 years'],
+                heights: ['30-34 in', '34-38 in', '38-42 in', '42-46 in', '46-50 in'],
+                weights: ['22-24 lbs', '24-28 lbs', '28-32 lbs', '32-36 lbs', '36-40 lbs']
+            },
+            'joggers': {
+                name: 'Joggers',
+                category: 'Playwear',
+                price: 22.99,
+                description: 'Stretchy joggers designed for endless play and calm comfort.',
+                colors: ['Charcoal', 'Navy', 'Green'],
+                image: 'https://images.pexels.com/photos/3888308/pexels-photo-3888308.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['18M', '2Y', '3Y', '4Y', '5Y'],
+                ages: ['18 months', '2 years', '3 years', '4 years', '5 years'],
+                heights: ['30-34 in', '34-38 in', '38-42 in', '42-46 in', '46-50 in'],
+                weights: ['22-24 lbs', '24-28 lbs', '28-32 lbs', '32-36 lbs', '36-40 lbs']
+            },
+            'jackets': {
+                name: 'Jackets Collection',
+                category: 'Jackets',
+                price: 39.99,
+                description: 'A range of jackets for cooler weather, play, and layering.',
+                image: 'https://images.pexels.com/photos/37478758/pexels-photo-37478758.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['2Y', '3Y', '4Y', '5Y', '6Y'],
+                ages: ['2 years', '3 years', '4 years', '5 years', '6 years'],
+                heights: ['35-38 in', '38-41 in', '41-44 in', '44-47 in', '47-50 in'],
+                weights: ['24-28 lbs', '28-31 lbs', '31-35 lbs', '35-39 lbs', '39-43 lbs']
+            },
+            'jeans': {
+                name: 'Jeans Collection',
+                category: 'Jeans',
+                price: 29.99,
+                description: 'Comfortable denim in stretch fits and classic washes.',
+                image: 'https://images.pexels.com/photos/17839401/pexels-photo-17839401.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['3Y', '4Y', '5Y', '6Y', '7Y'],
+                ages: ['3 years', '4 years', '5 years', '6 years', '7 years'],
+                heights: ['36-39 in', '39-42 in', '42-45 in', '45-48 in', '48-51 in'],
+                weights: ['28-32 lbs', '32-36 lbs', '36-40 lbs', '40-44 lbs', '44-48 lbs']
+            },
+            'shoes': {
+                name: 'Shoes Collection',
+                category: 'Shoes',
+                price: 34.99,
+                description: 'Runners, sneakers, and easy everyday styles for kids.',
+                image: 'https://images.pexels.com/photos/20406227/pexels-photo-20406227.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['7', '8', '9', '10', '11'],
+                ages: ['1 years', '2 years', '3 years', '4 years', '5 years'],
+                heights: ['33-36 in', '36-39 in', '39-42 in', '42-45 in', '45-48 in'],
+                weights: ['22-25 lbs', '25-28 lbs', '28-32 lbs', '32-36 lbs', '36-40 lbs']
+            },
+            'playwear': {
+                name: 'Playwear Collection',
+                category: 'Playwear',
+                price: 24.99,
+                description: 'Soft tees, hoodies, and easy styles for everyday play.',
+                image: 'https://images.pexels.com/photos/1073083/pexels-photo-1073083.jpeg?auto=compress&cs=tinysrgb&w=1400',
+                sizes: ['18M', '2Y', '3Y', '4Y', '5Y'],
+                ages: ['18 months', '2 years', '3 years', '4 years', '5 years'],
+                heights: ['30-34 in', '34-38 in', '38-42 in', '42-46 in', '46-50 in'],
+                weights: ['22-24 lbs', '24-28 lbs', '28-32 lbs', '32-36 lbs', '36-40 lbs']
+            }
+        };
+
+        function getQueryValue(name) {
+            return new URLSearchParams(window.location.search).get(name);
+        }
+
+        const detailContent = document.getElementById('detailContent');
+        const itemId = getQueryValue('id');
+        const item = items[itemId];
+        const STORAGE_USER = 'tinythreadsUser';
+        const STORAGE_CART = 'tinythreadsCartByUser';
+        const STORAGE_FAVORITES = 'tinythreadsFavoritesByUser';
+
+        let currentUser = JSON.parse(localStorage.getItem(STORAGE_USER) || 'null');
+        let cartMap = JSON.parse(localStorage.getItem(STORAGE_CART) || '{}');
+        let favoriteMap = JSON.parse(localStorage.getItem(STORAGE_FAVORITES) || '{}');
+        let cart = currentUser ? (cartMap[currentUser.email] || {}) : {};
+        let favorites = currentUser ? (favoriteMap[currentUser.email] || {}) : {};
+
+        function saveState() {
+            if(currentUser){
+                cartMap[currentUser.email] = cart;
+                favoriteMap[currentUser.email] = favorites;
+            }
+            localStorage.setItem(STORAGE_CART, JSON.stringify(cartMap));
+            localStorage.setItem(STORAGE_FAVORITES, JSON.stringify(favoriteMap));
+        }
+
+        function formatMoney(value){
+            return '$' + Number(value).toFixed(2);
+        }
+
+        function renderNotFound(){
+            detailContent.innerHTML = `
+                <div class="section-intro">
+                    <h3 class="section-title">Item not found</h3>
+                    <p>We couldn’t find that item. Please return to collections and choose another product.</p>
+                    <div class="section-footer">
+                        <a href="collections.html" class="btn btn-primary">Back to collections</a>
+                        <a href="index.html" class="btn btn-outline">Home</a>
+                    </div>
+                </div>`;
+        }
+
+        function getFieldLabel(key){
+            const labels = {
+                sizes: 'Choose size',
+                colors: 'Choose color',
+                ages: 'Suggested age',
+                heights: 'Choose height',
+                weights: 'Choose weight'
+            };
+            return labels[key] || key;
+        }
+
+        function getSummaryLabel(key){
+            const labels = {
+                sizes: 'Available sizes',
+                colors: 'Available colors',
+                ages: 'Suggested ages',
+                heights: 'Height options',
+                weights: 'Weight options'
+            };
+            return labels[key] || key;
+        }
+
+        function getFieldOrder(item){
+            const fieldMap = {
+                Shoes: ['sizes', 'colors'],
+                Jackets: ['sizes', 'colors', 'ages', 'heights', 'weights'],
+                Jeans: ['sizes', 'colors', 'ages', 'heights', 'weights'],
+                Playwear: ['sizes', 'colors', 'ages', 'heights', 'weights']
+            };
+            return (fieldMap[item.category] || ['sizes', 'colors', 'ages', 'heights', 'weights']).filter(key => Array.isArray(item[key]) && item[key].length);
+        }
+
+        function renderDetail(){
+            const fieldOrder = getFieldOrder(item);
+            const summaryHtml = fieldOrder.map(key => `<div><strong>${getSummaryLabel(key)}:</strong> ${item[key].join(', ')}</div>`).join('');
+            const fieldSelectors = fieldOrder.map(key => {
+                const options = item[key].map(value => `<option value="${value}">${value}</option>`).join('');
+                return `
+                        <div class="detail-meta">
+                            <label for="${key}Select">${getFieldLabel(key)}</label>
+                            <select id="${key}Select" data-attr="${key}">${options}</select>
+                        </div>`;
+            }).join('');
+
+            detailContent.innerHTML = `
+                <div class="detail-hero">
+                    <div class="detail-image">
+                        <img src="${item.image}" alt="${item.name}">
+                    </div>
+                    <div class="detail-panel">
+                        <span class="eyebrow">${item.category}</span>
+                        <h1>${item.name}</h1>
+                        <p>${item.description}</p>
+                        <div class="detail-meta">
+                            <div><strong>Price:</strong> ${formatMoney(item.price)}</div>
+                            <div><strong>Category:</strong> ${item.category}</div>
+                        </div>
+                        <div class="detail-meta">${summaryHtml}</div>
+                        ${fieldSelectors}
+                        <div class="detail-actions">
+                            <button id="addToCartButton" class="btn btn-primary" type="button">Add to Cart</button>
+                            <button id="favoriteDetailButton" class="btn btn-outline" type="button">Save to Favorites</button>
+                        </div>
+                        <div id="detailMessage" class="small" style="margin-top:12px;color:#334155"></div>
+                        <div class="section-footer">
+                            <a href="collections.html" class="btn btn-outline">Back to collections</a>
+                            <a href="index.html" class="btn btn-primary">Home</a>
+                        </div>
+                    </div>
+                </div>`;
+
+            const addToCartButton = document.getElementById('addToCartButton');
+            const favoriteDetailButton = document.getElementById('favoriteDetailButton');
+            const message = document.getElementById('detailMessage');
+
+            function refreshMessage(text){
+                message.textContent = text;
+            }
+
+            addToCartButton.addEventListener('click', function(){
+                if(!currentUser){ window.location.href = 'login.html'; return; }
+                const selects = Array.from(document.querySelectorAll('select[data-attr]'));
+                const selections = selects.reduce((acc, select) => {
+                    acc[select.dataset.attr] = select.value;
+                    return acc;
+                }, {});
+                const selectionKey = Object.entries(selections).map(([key, value]) => `${key}=${value}`).join('|');
+                const cartKey = `${item.name}:${selectionKey}`;
+                cart[cartKey] = { name: item.name, price: item.price, quantity: (cart[cartKey]?.quantity || 0) + 1, ...selections };
+                saveState();
+                refreshMessage('Added to cart with selected options.');
+            });
+
+            favoriteDetailButton.addEventListener('click', function(){
+                if(!currentUser){ window.location.href = 'login.html'; return; }
+                if(favorites[item.name]){
+                    delete favorites[item.name];
+                    favoriteDetailButton.textContent = 'Save to Favorites';
+                    refreshMessage('Removed from favorites.');
+                } else {
+                    favorites[item.name] = { name: item.name, price: item.price };
+                    favoriteDetailButton.textContent = 'Saved';
+                    refreshMessage('Saved to favorites.');
+                }
+                saveState();
+            });
+
+            if(currentUser && favorites[item.name]){
+                favoriteDetailButton.textContent = 'Saved';
+            }
+        }
+
+        if(!item){
+            renderNotFound();
+        } else {
+            renderDetail();
+        }
+
+        const toggle = document.querySelector('.nav-toggle');
+        const nav = document.getElementById('site-nav');
+        if(toggle && nav){
+            toggle.addEventListener('click', () => {
+                const isOpen = !nav.classList.contains('open');
+                nav.classList.toggle('open', isOpen);
+                toggle.setAttribute('aria-expanded', String(isOpen));
+            });
+            document.addEventListener('click', (event) => {
+                if(!nav.classList.contains('open')) return;
+                if(!nav.contains(event.target) && !toggle.contains(event.target)){
+                    nav.classList.remove('open');
+                    toggle.setAttribute('aria-expanded','false');
+                }
+            });
+            document.addEventListener('keydown', (event) => { if(event.key === 'Escape'){ nav.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); } });
+        }
+    </script>
+</body>
+</html>
