@@ -259,7 +259,7 @@
 
             const cartMap = JSON.parse(localStorage.getItem(STORAGE_CART) || '{}');
             const cart = currentUser ? (cartMap[currentUser.email] || {}) : {};
-            const cartTotal = Object.values(cart).reduce((sum, item) => sum + (item.quantity || 0), 0);
+            const cartTotal = Object.keys(cart).length;
             cartCount.textContent = cartTotal;
             cartCount.style.display = cartTotal ? 'inline-flex' : 'none';
 

@@ -412,6 +412,7 @@
             localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
             updateCartCount();
             updateFavoriteCount();
+            refreshCartButton();
             if(!document.getElementById('cartOverlay').classList.contains('hidden')){
                 renderCart();
             }
@@ -422,7 +423,7 @@
         }
 
         function updateCartCount(){
-            const total = Object.values(cart).reduce((sum, i) => sum + i.quantity, 0);
+            const total = Object.keys(cart).length;
             const el = document.getElementById('cartCount');
             if(el){ el.textContent = total; el.style.display = total ? 'inline-flex' : 'none'; }
         }
@@ -574,6 +575,7 @@
                 }
                 updateCartCount();
                 updateFavoriteCount();
+                refreshCartButton();
                 renderFavorites();
             }
 
@@ -621,6 +623,22 @@
             deleteAllButton.addEventListener('click', () => {
                 if(!Object.keys(cart).length) return;
                 cart = {}; saveState(); updateCartCount(); renderCart(); refreshCartButton();
+            });
+
+            window.addEventListener('storage', function(event){
+                if(!['tinythreadsCartByUser','tinythreadsFavoritesByUser','tinythreadsUser'].includes(event.key)) return;
+                currentUser = JSON.parse(localStorage.getItem(STORAGE_USER) || 'null');
+                cartMap = JSON.parse(localStorage.getItem(STORAGE_CART) || '{}');
+                favoriteMap = JSON.parse(localStorage.getItem(STORAGE_FAVORITES) || '{}');
+                cart = currentUser ? (cartMap[currentUser.email] || {}) : {};
+                favorites = currentUser ? (favoriteMap[currentUser.email] || {}) : {};
+                updateCartCount();
+                updateFavoriteCount();
+                refreshCartButton();
+                updateAuthNav();
+                if(cartOverlay && cartOverlay.classList.contains('show')){
+                    renderCart();
+                }
             });
 
             updateCartCount();

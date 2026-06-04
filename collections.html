@@ -385,7 +385,7 @@
             function formatMoney(value){ return '$' + Number(value).toFixed(2); }
 
             function updateCartCount(){
-                const total = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+                const total = Object.keys(cart).length;
                 if(cartCount){ cartCount.textContent = total; cartCount.style.display = total ? 'inline-flex' : 'none'; }
             }
 
@@ -573,7 +573,22 @@
             document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeCartOverlay(); closeFavoritesOverlay(); } });
             if(checkoutButton){ checkoutButton.addEventListener('click', () => { if(!Object.keys(cart).length) return; cart = {}; saveState(); updateCartCount(); renderCart(); closeCartOverlay(); }); }
             if(deleteAllButton){ deleteAllButton.addEventListener('click', () => { if(!Object.keys(cart).length) return; clearCart(); }); }
-
+            window.addEventListener('storage', function(event){
+                if(!['tinythreadsCartByUser','tinythreadsFavoritesByUser','tinythreadsUser'].includes(event.key)) return;
+                currentUser = JSON.parse(localStorage.getItem(STORAGE_USER) || 'null');
+                cartMap = JSON.parse(localStorage.getItem(STORAGE_CART) || '{}');
+                favoriteMap = JSON.parse(localStorage.getItem(STORAGE_FAVORITES) || '{}');
+                cart = currentUser ? (cartMap[currentUser.email] || {}) : {};
+                favorites = currentUser ? (favoriteMap[currentUser.email] || {}) : {};
+                updateCartCount();
+                updateCartButtons();
+                updateFavoriteCount();
+                updateFavoriteButtons();
+                updateAuthNav();
+                if(cartOverlay && cartOverlay.classList.contains('show')){
+                    renderCart();
+                }
+            });
             addCartButtons.forEach(button => {
                 button.addEventListener('click', function(){
                     if(!currentUser){ window.location.href = 'login.html'; return; }

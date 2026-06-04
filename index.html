@@ -474,8 +474,33 @@
 
             function formatMoney(value){ return '$' + Number(value).toFixed(2); }
 
+            const collectionItemsById = {
+                jackets: [
+                    { name: 'Denim Jacket', price: 44.99 },
+                    { name: 'Play Jacket', price: 39.99 },
+                    { name: 'Puffer Jacket', price: 49.99 },
+                    { name: 'Rain Jacket', price: 42.99 }
+                ],
+                jeans: [
+                    { name: 'Stretch Jeans', price: 32.99 },
+                    { name: 'Soft Jeans', price: 29.99 },
+                    { name: 'Slim Jeans', price: 33.50 },
+                    { name: 'Denim Shorts', price: 27.99 }
+                ],
+                shoes: [
+                    { name: 'Kids Sneakers', price: 34.99 },
+                    { name: 'High-Top Sneakers', price: 38.99 },
+                    { name: 'Slip-On Shoes', price: 31.49 },
+                    { name: 'Sport Shoes', price: 36.99 }
+                ]
+            };
+
+            function formatCollectionItems(items){
+                return items.map(item => `${item.name} — ${formatMoney(item.price)}`);
+            }
+
             function updateCartCount(){
-                const total = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+                const total = Object.keys(cart).length;
                 cartCount.textContent = total;
                 cartCount.style.display = total ? 'inline-flex' : 'none';
             }
@@ -562,10 +587,14 @@
                 entries.forEach(item => {
                     const row = document.createElement('div');
                     row.className = 'favorite-row';
+                    const itemDetails = item.type === 'collection'
+                        ? `<ul class="favorite-item-list">${item.items.map(sub => `<li>${sub.name} — ${formatMoney(sub.price)}</li>`).join('')}</ul>`
+                        : '';
                     row.innerHTML = `
                         <div>
                             <strong>${item.name}</strong>
                             <p>${formatMoney(item.price)}</p>
+                            ${itemDetails}
                         </div>
                         <button type="button" class="btn btn-outline favorite-remove" data-item="${item.name}" aria-label="Remove favorite">
                             <i class="bi bi-heart-fill" aria-hidden="true"></i>
@@ -600,9 +629,14 @@
                 saveState(); updateFavoriteCount(); updateFavoriteButtons(); renderFavorites();
             }
 
-            function toggleFavorite(name, price){
+            function createFavoriteRecord(name, price, type, items){
+                return { name, price, type, items };
+            }
+
+            function toggleFavorite(name, price, type = 'item', items = []){
                 if(!currentUser){ window.location.href = 'login.html'; return; }
-                if(favorites[name]){ delete favorites[name]; } else { favorites[name] = { name, price }; }
+                if(favorites[name]){ delete favorites[name]; }
+                else { favorites[name] = createFavoriteRecord(name, price, type, items); }
                 saveState(); updateFavoriteCount(); updateFavoriteButtons(); renderFavorites();
             }
 
@@ -693,8 +727,35 @@
                 button.addEventListener('click', function(){
                     const article = button.closest('[data-item]');
                     if(!article) return;
-                    toggleFavorite(article.dataset.item, Number(article.dataset.price || 0));
+                    const itemName = article.dataset.item;
+                    const isCollection = article.classList.contains('category-card');
+                    const price = Number(article.dataset.price || 0);
+                    if(isCollection){
+                        const categoryId = article.dataset.id;
+                        const items = collectionItemsById[categoryId] || [];
+                        const totalPrice = items.reduce((sum, item) => sum + item.price, 0);
+                        toggleFavorite(itemName, totalPrice, 'collection', items);
+                    } else {
+                        toggleFavorite(itemName, price, 'item', [{ name: itemName, price }]);
+                    }
                 });
+            });
+
+            window.addEventListener('storage', function(event){
+                if(!['tinythreadsCartByUser','tinythreadsFavoritesByUser','tinythreadsUser'].includes(event.key)) return;
+                currentUser = JSON.parse(localStorage.getItem(STORAGE_USER) || 'null');
+                cartMap = JSON.parse(localStorage.getItem(STORAGE_CART) || '{}');
+                favoriteMap = JSON.parse(localStorage.getItem(STORAGE_FAVORITES) || '{}');
+                cart = currentUser ? (cartMap[currentUser.email] || {}) : {};
+                favorites = currentUser ? (favoriteMap[currentUser.email] || {}) : {};
+                updateCartCount();
+                updateCartButtons();
+                updateFavoriteCount();
+                updateFavoriteButtons();
+                updateAuthNav();
+                if(cartOverlay && cartOverlay.classList.contains('show')){
+                    renderCart();
+                }
             });
 
             const navigableCards = Array.from(document.querySelectorAll('[data-id]'));
@@ -703,14 +764,22 @@
                     if(event.target.closest('button, a')) return;
                     const itemId = card.dataset.id;
                     if(!itemId) return;
-                    window.location.href = `details.html?id=${encodeURIComponent(itemId)}`;
+                    if(card.classList.contains('category-card')){
+                        window.location.href = `collections.html#${encodeURIComponent(itemId)}`;
+                    } else {
+                        window.location.href = `details.html?id=${encodeURIComponent(itemId)}`;
+                    }
                 });
                 card.addEventListener('keydown', function(event){
                     if(event.key !== 'Enter') return;
                     if(event.target.closest('button, a')) return;
                     const itemId = card.dataset.id;
                     if(!itemId) return;
-                    window.location.href = `details.html?id=${encodeURIComponent(itemId)}`;
+                    if(card.classList.contains('category-card')){
+                        window.location.href = `collections.html#${encodeURIComponent(itemId)}`;
+                    } else {
+                        window.location.href = `details.html?id=${encodeURIComponent(itemId)}`;
+                    }
                 });
             });
 
