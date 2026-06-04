@@ -41,7 +41,6 @@ body {
 /* ── Header ── */
 .site-header {
   background: rgba(255, 251, 245, 0.96);
-  backdrop-filter: blur(6px);
   position: sticky;
   top: 0;
   z-index: 40;
@@ -1432,6 +1431,21 @@ a .eyebrow,
     grid-template-columns: 1fr;
     gap: 14px;
   }
+  .detail-page .detail-hero {
+    grid-template-columns: 1fr;
+  }
+  .detail-page .detail-image {
+    display: flex;
+    justify-content: center;
+  }
+  .detail-page .detail-image img {
+    width: 100%;
+    max-width: 540px;
+    margin: 0 auto 24px;
+  }
+  .detail-page .detail-panel {
+    width: 100%;
+  }
   .category-card h4 {
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -1510,6 +1524,26 @@ a .eyebrow,
     justify-content: center;
     line-height: 1;
   }
+}
+
+/* ── Performance: GPU compositing for image cards ── */
+.collection-card,
+.category-card,
+.card {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.collection-card img,
+.category-card img,
+.card img {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.collection-card img,
+.category-card img {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* ── Keyboard focus ── */
